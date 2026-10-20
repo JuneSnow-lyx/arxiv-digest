@@ -9,3 +9,7 @@ def head(title):
     return (f'<!DOCTYPE html>\n<html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">'
             f'<title>{title}</title><style>\n{CSS}\n</style></head><body>')
+
+def hjfy(arxiv_id):
+    """幻觉翻译（hjfy.top）单篇论文页：路由 /arxiv/:id，已核实（2026-10-20）。"""
+    return f"https://hjfy.top/arxiv/{arxiv_id}"

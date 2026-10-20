@@ -114,10 +114,47 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
   .issue,.issue.latest{padding:14px}
   .issue.latest .d{font-size:20px}
 }
+/* 顶部链接与搜索入口 */
+.toplinks{display:flex;gap:16px}
+.qs{display:flex;gap:8px;margin:12px 0 2px;max-width:640px}
+.qs input{flex:1}
+input[type=search],input[type=date],select{font:inherit;font-size:14.5px;color:var(--ink);background:#fff;border:1px solid #cddbeb;border-radius:9px;padding:5px 10px;outline:none}
+input[type=search]:focus,input[type=date]:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.sbox{position:relative;margin:10px 0 8px}
+.sbox input{width:100%;font-size:16.5px;padding:10px 44px 10px 14px;border-radius:12px}
+kbd{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 6px;background:#fff}
+.sbox kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%)}
+.filters{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:8px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.fl{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:.06em;min-width:34px}
+.muted{color:var(--muted)}
+.chk{display:inline-flex;align-items:center;gap:4px;margin-left:14px;color:var(--ink2)}
+.tagbtn{cursor:pointer;font:inherit;font-size:12.5px}
+.tagbtn .cnt{color:var(--faint);font-size:11.5px}
+.tagbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)} .tagbtn.on .cnt{color:#d6e6fa}
+.btn.sm{font-size:13px;padding:3px 11px}
+button.btn{cursor:pointer;font-family:inherit}
+.stat{font-size:13.5px;color:var(--muted);margin:12px 0 2px}
+.exp{font-size:13px;color:var(--muted);margin-bottom:4px}
+.hit{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-top:10px}
+.hit.brief{background:var(--paper)}
+.hit-top{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.hit-top .stars{margin-left:auto}
+.hit h3{font-size:18px;margin:2px 0 0;line-height:1.4}
+.hit h3 a{border:none;color:var(--ink)} .hit h3 a:hover{color:var(--blue)}
+.hit-en{font-family:var(--sans);font-weight:400;font-size:14.5px;color:var(--ink2)}
+.hit-zh{font-size:14.5px;color:var(--ink2)}
+.hit-meta{font-size:13px;color:var(--muted)}
+.snip{font-size:14.5px;color:var(--ink2);margin:6px 0 0;max-width:var(--measure)}
+.sf{display:inline-block;font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-l);border-radius:5px;padding:0 6px;margin-right:6px}
+.hit .actions{margin-top:8px}
+.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;margin-top:10px}
+.others .ol{display:block;font-size:13px;margin-top:3px}
+@media (max-width:640px){ .toplinks{gap:10px;font-size:13px} .chk{margin-left:0} .fl[style]{margin-left:0!important} }
 
 </style></head><body>
 <div class="wrap">
-<div class="topbar"><span class="brand"><span class="dot"></span>arXiv 每日精选</span><a href="../index.html">← 返回往期目录</a></div>
+<div class="topbar"><span class="brand"><span class="dot"></span>arXiv 每日精选</span><span class="toplinks"><a href="../search.html">🔍 搜索往期论文</a><a href="../index.html">← 返回往期目录</a></span></div>
 <span class="eyebrow">Video Generation · Post-Training</span>
 <h1 class="title">视频生成后训练 · 每日论文精选</h1>
 <p class="lede">聚焦视频生成模型的后训练：蒸馏、少步采样、缓存、稀疏注意力、量化，以及 RL / 偏好对齐与长视频生成效率。</p>
@@ -144,7 +181,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div>需要训练（ODE 初始化 + DMD 蒸馏两阶段，CGN 贯穿始终）。基座 <b>Wan2.1-1.3B</b>（832×480，5 秒），先按 CausVid 做块因果微调；学生每块 3 帧、4 步去噪。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">VBench（MovieGen 前 128 条提示）质量分 <mark>83.59</mark>，为所有对比方法最高；单张 H100 吞吐 <mark>26.8 FPS（torch.compile）/ 22.2 FPS（不编译）</mark>，FPS 只统计扩散主干、不含 VAE 解码。仅用 4 NFE 即超过 5 NFE 的 Self-Forcing（+1.26）和 Causal-Forcing（+0.68）。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>字节 Seed 出品，对 Self-Forcing / DMD 这一路自回归蒸馏做了<b>有理论支撑、可逐项消融</b>的系统改进；CGN“去掉额外前向”的技巧几乎零成本，值得直接借鉴。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26165" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26165" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26165" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.26165" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a></div></aside></div>
 </article>
 <article class="paper" id="p2">
 <div class="paper-top"><span class="paper-no">No. 02</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -157,7 +194,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div><b>免训练</b>，配合 FlashAttention-2、Block-Sparse Attention 与自定义 Triton 内核。评测 <b>CogVideoX-1.5-5B、HunyuanVideo-13B、Wan2.1-1.3B</b>（均 50 步），附录扩展到 FLUX.1-dev。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">HunyuanVideo 720p、5 秒生成上 <mark>3.05× 加速</mark>，保真度和速度均优于所有测试的“稀疏 + 缓存”直接组合（SVOO/DFSAttn × TeaCache/LeMiCa/NaviCache）。常规加速区间：RECAP-Quality 相对最强单一基线 PSNR <b>+3.74 dB（CogVideoX-1.5）/ +1.42 dB（HunyuanVideo）</b>；RECAP-Speed 加速 <b>1.75× / 2.14×</b>。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>“稀疏 × 缓存”如何正确组合是工程落地的真问题；本文给出的是有实验动机、可即插即用的方案，<b>代码已开源</b>。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26244" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26244" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://github.com/lyraxtg/RECAP" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26244" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.26244" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a><a class="btn ghost" href="https://github.com/lyraxtg/RECAP" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p3">
 <div class="paper-top"><span class="paper-no">No. 03</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -170,7 +207,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div><b>免训练</b>、即插即用，额外显存 &lt;0.05 GiB。评测 FLUX.1-dev、Qwen-Image 与视频模型 <b>Wan2.1-14B、HunyuanVideo</b>，以 50 步为参考，H100 上测试。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">HunyuanVideo 14-NFE 预算下比最强基线 SeaCache <mark>PSNR 高 2.1 dB</mark>，速度 <mark>3.33×</mark>（SeaCache 2.57×）；Wan2.1-14B 各预算下 VBench Quality 均为最佳，14-NFE 时与原模型差距在 0.25 分以内。图像上最高 <b>5.54×（FLUX）/ 6.00×（Qwen-Image）</b>，分别比最强基线高 1.1 / 2.0 dB。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>把“特征外推”升级为<b>频域 + 不确定性驱动的自适应计算</b>，思路优雅、开销极小，对任何 DiT 视频模型都可直接尝试。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26837" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26837" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26837" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.26837" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a></div></aside></div>
 </article>
 <article class="paper" id="p4">
 <div class="paper-top"><span class="paper-no">No. 04</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -183,7 +220,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div>推理机制可直接使用，另有轻量蒸馏微调。集成到 <b>Self-Forcing 与 LongLive</b>，覆盖 5 秒、30 秒长视频以及 720P/1080P 高分辨率生成，H100 测试。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">5 秒视频 <b>1.53×</b>（TeaCache 仅 1.18×）；30 秒长视频最高 <b>1.45×</b>；加速随分辨率增大，<mark>1080P 下最高 2.16×</mark>。加入动态引导蒸馏后吞吐达 <b>27.58 FPS（1.50×）</b>且语义分最高。<b>已被 NeurIPS 2026 接收</b>。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>同时针对长视频自回归的<b>算力与显存</b>两大瓶颈，“只算会动的地方”直觉清晰，且与 TeaCache 等缓存方法正交可叠加。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26262" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26262" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://yuanyu0.github.io/DASA/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26262" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.26262" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a><a class="btn ghost" href="https://yuanyu0.github.io/DASA/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p5">
 <div class="paper-top"><span class="paper-no">No. 05</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -196,7 +233,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div>需要训练（约 <b>1 个 GPU 日</b>），LoRA 可合并进权重，<b>推理零额外开销</b>。主实验基座为轻度因果化的 <b>Wan2.1-1.3B</b>，并验证 Causal-Forcing 基座及 10 倍大的 <b>Wan2.1-T2V-14B</b>。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">50 秒文生视频（128 条 MovieGen 提示）Δ-drift 从 <mark>+11.3 降到 +1.65（无真实视频）</mark>、<mark>−0.16（40 段真实视频）</mark>，优于已发表最佳 +3.57，数据量少 <b>150 倍以上</b>；14B 基座上消除 94% 漂移。用户研究中 +real 版本相对基座胜率 93.0%、相对 Self Forcing 83.9%。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>极低成本的长视频后训练：不动基座、几乎不要数据、不增加推理成本，<b>性价比极高</b>，可直接套用到已发布的 AR 视频模型。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25634" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25634" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://clean-forcing.github.io/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25634" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.25634" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a><a class="btn ghost" href="https://clean-forcing.github.io/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p6">
 <div class="paper-top"><span class="paper-no">No. 06</span><span class="stars" title="推荐指数">★★★★<span class="off">★</span><span class="sc">4</span></span></div>
@@ -209,7 +246,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div><b>免训练、即插即用</b>，可叠加在 MagCache、DiCache 等缓存方法之上。评测 FLUX.1-dev、Qwen-Image-2512，视频模型 <b>Wan 2.1-1.3B、CogVideoX-2B、OpenSora 1.2</b>。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">在可比或更高加速比下持续提升重建保真度（PSNR/SSIM/LPIPS），并保持有竞争力的 VBench 质量；论文正文未给出单一的视频加速倍数总结，故此处不列具体数字。消融显示平滑与 PVR 各自有效、组合最佳。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>视角新颖——从“预测未来”转到“用未来修正过去”，作为通用后处理可叠加在任意缓存方法上，与 SpecKCast 对照阅读很有启发。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25664" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25664" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25664" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.25664" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a></div></aside></div>
 </article>
 <article class="paper" id="p7">
 <div class="paper-top"><span class="paper-no">No. 07</span><span class="stars" title="推荐指数">★★★★<span class="off">★</span><span class="sc">4</span></span></div>
@@ -222,7 +259,7 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div>需要微调，但<b>不需要教师、在线判别器或长视频</b>。基座 <b>MiniWorld-1B</b>（在 253 帧片段上预训练），在 381 帧片段上微调，最多 36 GPU 小时；任务覆盖 DROID 机器人操作与 Sekai 相机控制探索。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">微调后 rollout 在 <mark>4,000 帧以上</mark>保持稳定并持续遵循动作；DROID 上相对正反向回放的 PSNR 到第 4,000 帧仍 <mark>&gt;21 dB</mark>，基座仅 <b>8.9 dB</b>。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>为 Self-Forcing 类长视频后训练提供了<b>不依赖教师</b>的新范式，训练成本低，对世界模型、交互式视频生成方向尤其有参考价值。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25666" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25666" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25666" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.25666" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a></div></aside></div>
 </article>
 <article class="paper" id="p8">
 <div class="paper-top"><span class="paper-no">No. 08</span><span class="stars" title="推荐指数">★★★★<span class="off">★</span><span class="sc">4</span></span></div>
@@ -235,11 +272,11 @@ footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-si
 <aside class="side"><div class="setup"><div class="side-h">设置</div>需要训练（SFT + DPO 两阶段）。基座 <b>Wan2.1-I2V-14B</b>。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">阶段一相对基座：PSNR <mark>22.50 → 31.52</mark>，FVD <mark>569.7 → 192.1</mark>，VBench 主体一致性 0.8929 → 0.9383。DPO 后 FluidNexus 指标与仅微调持平，成像质量显著提升、美学略升，主体一致性小幅下降（0.9383 → 0.9350），作者解释为奖励偏好更强湍流。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>“辅助物理信号 → 奖励 → DPO”是视频偏好对齐的好范例：奖励直接来自模型自身输出，无需外部光流或仿真器；生成的速度场还能导回 Houdini 使用。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25660" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25660" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://y-zheng18.github.io/FluidGen/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25660" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://hjfy.top/arxiv/2610.25660" target="_blank" rel="noopener" title="幻觉翻译中文版；尚未翻译的论文需在该站登录后自动创建翻译">中文 PDF（幻觉翻译）↗</a><a class="btn ghost" href="https://y-zheng18.github.io/FluidGen/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
-<h2 class="section-h">其他值得一瞥</h2><p class="section-sub">未入选正文、但与方向相关的论文</p><ul class="others">
-<li><a href="https://arxiv.org/abs/2610.24750" target="_blank" rel="noopener">CorrFlow: Self-Correcting Flow Matching</a><span class="d">用轻量 refiner 复用同一次前向的隐状态逐步修正速度预测，无额外基座前向，T2V/I2V 质量与物理一致性提升。</span></li>
-<li><a href="https://arxiv.org/abs/2610.25273" target="_blank" rel="noopener">GeoART: Geometry-Aware Refinement via Test-Time Scaling for Camera-Conditioned Video Diffusion</a><span class="d">免训练的几何感知测试时扩展，提升相机控制精度与多视角一致性。</span></li>
-<li><a href="https://arxiv.org/abs/2610.26069" target="_blank" rel="noopener">Risk Decomposition for Hallucination-Aware Video Sampling</a><span class="d">把物理幻觉拆为低密度采样风险与高密度漂移风险，提出 HA-Sampler / HA-Scorer。</span></li>
+<h2 class="section-h" id="others">其他值得一瞥</h2><p class="section-sub">未入选正文、但与方向相关的论文</p><ul class="others">
+<li><a href="https://arxiv.org/abs/2610.24750" target="_blank" rel="noopener">CorrFlow: Self-Correcting Flow Matching</a><span class="d">用轻量 refiner 复用同一次前向的隐状态逐步修正速度预测，无额外基座前向，T2V/I2V 质量与物理一致性提升。</span><span class="ol"><a href="https://hjfy.top/arxiv/2610.24750" target="_blank" rel="noopener">中文 PDF（幻觉翻译）↗</a></span></li>
+<li><a href="https://arxiv.org/abs/2610.25273" target="_blank" rel="noopener">GeoART: Geometry-Aware Refinement via Test-Time Scaling for Camera-Conditioned Video Diffusion</a><span class="d">免训练的几何感知测试时扩展，提升相机控制精度与多视角一致性。</span><span class="ol"><a href="https://hjfy.top/arxiv/2610.25273" target="_blank" rel="noopener">中文 PDF（幻觉翻译）↗</a></span></li>
+<li><a href="https://arxiv.org/abs/2610.26069" target="_blank" rel="noopener">Risk Decomposition for Hallucination-Aware Video Sampling</a><span class="d">把物理幻觉拆为低密度采样风险与高密度漂移风险，提出 HA-Sampler / HA-Scorer。</span><span class="ol"><a href="https://hjfy.top/arxiv/2610.26069" target="_blank" rel="noopener">中文 PDF（幻觉翻译）↗</a></span></li>
 </ul>
 <footer>所有数字均来自论文正文或摘要；8 篇均已阅读 PDF 正文的方法与实验部分。推荐指数为主观评估。<br>由 论文推送Bot 生成 · 2026-10-20<br><a href="../index.html">← 返回往期目录</a></footer></div></body></html>

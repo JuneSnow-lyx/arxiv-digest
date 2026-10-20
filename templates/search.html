@@ -1,0 +1,144 @@
+<div class="wrap">
+<div class="topbar"><span class="brand"><span class="dot"></span>arXiv 每日精选</span><span class="toplinks"><a href="index.html">← 往期目录</a></span></div>
+<span class="eyebrow">Search</span>
+<h1 class="title">搜索往期论文</h1>
+<div class="sbox">
+  <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="输入关键词，空格分隔多词（AND）。例：蒸馏、cache、长视频 漂移、DMD 自回归" aria-label="搜索">
+  <kbd>/</kbd>
+</div>
+<div class="filters">
+  <div class="frow"><span class="fl">标签</span><div id="tags" class="chips"></div></div>
+  <div class="frow">
+    <span class="fl">日期</span><input id="from" type="date"> <span class="muted">至</span> <input id="to" type="date">
+    <span class="fl" style="margin-left:14px">推荐 ≥</span>
+    <select id="minstars"><option value="0">不限</option><option value="3">3</option><option value="4">4</option><option value="4.5">4.5</option><option value="5">5</option></select>
+    <span class="fl" style="margin-left:14px">排序</span>
+    <select id="sort"><option value="rel">相关度</option><option value="date">日期（新→旧）</option><option value="stars">推荐指数</option></select>
+    <label class="chk"><input id="brief" type="checkbox" checked> 含“简要”条目</label>
+    <button id="reset" class="btn ghost sm" type="button">清空</button>
+  </div>
+</div>
+<div id="stat" class="stat"></div>
+<div id="exp" class="exp"></div>
+<div id="res"></div>
+<footer>纯前端本地搜索 · 支持中英混合、多词 AND、大小写/全半角不敏感、前缀与拼写容错、同义词扩展 · 按 <kbd>/</kbd> 聚焦，<kbd>Esc</kbd> 清空</footer>
+</div>
+<script type="application/json" id="idx">/*__INDEX__*/[]</script>
+<script>
+(function(){
+const DOCS = JSON.parse(document.getElementById('idx').textContent);
+// 同义词组（规范化后比较）；查询词命中组内任一词（或其前缀）即扩展为整组
+const SYN = [
+ ["蒸馏","distillation","distill","dmd","consistency model","一致性模型","lcm","少步","few-step","few step","单步蒸馏","one-step","step distillation"],
+ ["加速","acceleration","accelerate","speedup","speed-up","efficient","efficiency","高效","提速","实时","real-time","fps"],
+ ["缓存","cache","caching","kv cache","kv-cache","teacache","特征缓存","复用","reuse"],
+ ["稀疏注意力","sparse attention","sparse","稀疏","sparsity","sparse-linear","linear attention","线性注意力"],
+ ["量化","quantization","quantize","int8","fp8","low-bit","低比特"],
+ ["剪枝","pruning","prune","token","压缩","compression","token merging"],
+ ["强化学习","rl","reinforcement","grpo","ppo","dpo","reward","奖励","偏好","preference","偏好对齐","preference alignment","rlhf"],
+ ["长视频","long video","long-horizon","长时程","drift","漂移","exposure bias","曝光偏差","streaming","流式"],
+ ["自回归","autoregressive","ar","forcing","self-forcing","causal","因果","chunk-wise","streaming"],
+ ["预测","forecasting","forecast","extrapolation","外推","kalman","卡尔曼"],
+ ["免训练","training-free","training free","plug-and-play","即插即用"],
+ ["微调","fine-tuning","finetune","fine-tune","lora","sft","后训练","post-training"],
+ ["世界模型","world model","world models","action-conditioned","交互"],
+ ["物理","physics","physical","流体","fluid"]
+];
+const W = {short:10,title:8,zh:8,tags:7,method:4,problem:2.5,results:2.5,setup:1.5,why:1,aff:2,id:6};
+const FIELDS = Object.keys(W);
+const norm = s => (s||'').normalize('NFKC').toLowerCase().replace(/[\u2010-\u2015]/g,'-');
+const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isLatin = t => /^[a-z0-9.\-+×]+$/.test(t);
+// 预处理
+DOCS.forEach(d=>{ d._n={}; d._w={}; FIELDS.forEach(f=>{ const v = f==='tags'? d.tags.join(' ') : d[f]; d._n[f]=norm(v); d._w[f]=d._n[f].split(/[^a-z0-9\-]+/).filter(x=>x.length>2); }); });
+const SYNN = SYN.map(g=>g.map(norm));
+function lev1(a,b){ // 编辑距离 ≤1
+  if(Math.abs(a.length-b.length)>1) return false; let i=0,j=0,e=0;
+  while(i<a.length&&j<b.length){ if(a[i]===b[j]){i++;j++;continue;} if(++e>1) return false;
+    if(a.length>b.length) i++; else if(a.length<b.length) j++; else {i++;j++;} }
+  return e+(a.length-i)+(b.length-j)<=1;
+}
+function expand(t){
+  const alts=[{s:t,w:1}]; const seen=new Set([t]);
+  SYNN.forEach(g=>{ if(g.some(x=>x===t || (t.length>=2 && x.startsWith(t) && !isLatin(t)) || (isLatin(t)&&t.length>=4&&x.startsWith(t)))) g.forEach(x=>{ if(!seen.has(x)){seen.add(x); alts.push({s:x,w:.7});} }); });
+  return alts;
+}
+function scoreTerm(d,alts,hits){
+  let best=0;
+  for(const f of FIELDS){
+    const v=d._n[f]; if(!v) continue;
+    for(const a of alts){
+      let m=0; const shortLatin = isLatin(a.s) && a.s.length<=3;
+      if(shortLatin){ if(new RegExp('(^|[^a-z0-9])'+a.s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z]|$)').test(v)) m=1; }
+      else if(v.includes(a.s)) m=1;
+      else if(isLatin(a.s) && a.s.length>=4){ if(d._w[f].some(w=>w.startsWith(a.s))) m=.8; else if(a.s.length>=5 && d._w[f].some(w=>lev1(w,a.s))) { m=.5; d._w[f].forEach(w=>{ if(lev1(w,a.s)) hits.add(w); }); } }
+      if(m){ hits.add(a.s); best += W[f]*m*a.w; }
+    }
+  }
+  return best;
+}
+// UI
+const $=id=>document.getElementById(id);
+const q=$('q'), res=$('res'), stat=$('stat'), exp=$('exp');
+const allTags=[...new Set(DOCS.flatMap(d=>d.tags))];
+const counts={}; DOCS.forEach(d=>d.tags.forEach(t=>counts[t]=(counts[t]||0)+1));
+allTags.sort((a,b)=>counts[b]-counts[a]);
+const selTags=new Set();
+$('tags').innerHTML=allTags.map(t=>`<button type="button" class="chip tagbtn" data-t="${esc(t)}">${esc(t)} <span class="cnt">${counts[t]}</span></button>`).join('');
+$('tags').addEventListener('click',e=>{const b=e.target.closest('.tagbtn'); if(!b) return; const t=b.dataset.t; selTags.has(t)?selTags.delete(t):selTags.add(t); b.classList.toggle('on'); run();});
+function hl(text,hits){
+  if(!text) return ''; const terms=[...hits].filter(x=>x&&x!=='×').sort((a,b)=>b.length-a.length);
+  const n=norm(text); if(!terms.length) return esc(text);
+  // 在规范化文本上找区间，映射回原文（NFKC 对绝大多数字符等长；不等长时退化为不高亮）
+  if(n.length!==text.length) return esc(text);
+  const marks=new Array(text.length).fill(false);
+  terms.forEach(t=>{ let i=0; while((i=n.indexOf(t,i))>=0){ for(let k=i;k<i+t.length;k++) marks[k]=true; i+=t.length; } });
+  let out='',on=false; for(let i=0;i<text.length;i++){ if(marks[i]&&!on){out+='<mark>';on=true;} if(!marks[i]&&on){out+='</mark>';on=false;} out+=esc(text[i]); } if(on) out+='</mark>'; return out;
+}
+function snippet(d,hits){
+  const fs=['method','problem','results','setup','why'];
+  const terms=[...hits].sort((a,b)=>b.length-a.length);
+  for(const f of fs){ const v=d[f]; if(!v) continue; const n=norm(v); for(const t of terms){ const i=n.indexOf(t); if(i>=0){ const s=Math.max(0,i-50), e=Math.min(v.length,i+t.length+110); return {f, html:(s>0?'…':'')+hl(v.slice(s,e),hits)+(e<v.length?'…':'')}; } } }
+  const v=d.method||d.problem||''; return {f:'method', html:hl(v.slice(0,150),hits)+(v.length>150?'…':'')};
+}
+const FN={method:'方法',problem:'问题',results:'结果',setup:'设置',why:'推荐理由'};
+function stars(s){ if(!s) return ''; const f=Math.floor(s), h=s-f>=.5; return '<span class="stars">'+'★'.repeat(f)+(h?'<span style="opacity:.45">★</span>':'')+'<span class="off">'+'★'.repeat(5-f-(h?1:0))+'</span><span class="sc">'+s+'</span></span>'; }
+function run(push=true){
+  const raw=q.value.trim(); const terms=norm(raw).split(/\s+/).filter(Boolean);
+  const from=$('from').value, to=$('to').value, ms=parseFloat($('minstars').value), sort=$('sort').value, brief=$('brief').checked;
+  const expanded=terms.map(expand);
+  exp.innerHTML = terms.length && expanded.some(a=>a.length>1) ? '同义扩展：'+expanded.map((a,i)=>`<b>${esc(terms[i])}</b>${a.length>1?' → '+a.slice(1,7).map(x=>esc(x.s)).join(' / ')+(a.length>7?' …':''):''}`).join('　') : '';
+  let out=[];
+  for(const d of DOCS){
+    if(!brief && d.brief) continue;
+    if(from && d.date<from) continue; if(to && d.date>to) continue;
+    if(ms && (d.stars||0)<ms) continue;
+    if(selTags.size && !d.tags.some(t=>selTags.has(t))) continue;
+    const hits=new Set(); let sc=0, ok=true;
+    for(const alts of expanded){ const s=scoreTerm(d,alts,hits); if(!s){ok=false;break;} sc+=s; }
+    if(!ok) continue;
+    if(d.brief) sc*=.6;
+    out.push({d,sc,hits});
+  }
+  const by={rel:(a,b)=>b.sc-a.sc||b.d.date.localeCompare(a.d.date), date:(a,b)=>b.d.date.localeCompare(a.d.date)||b.sc-a.sc, stars:(a,b)=>(b.d.stars-a.d.stars)||b.sc-a.sc};
+  out.sort(terms.length?by[sort]:(sort==='stars'?by.stars:by.date));
+  stat.innerHTML = `共 <b>${out.length}</b> 条结果` + (terms.length?`（关键词：${terms.map(esc).join(' + ')}）`:'（全部论文）') + ` · 索引 ${DOCS.length} 条`;
+  res.innerHTML = out.length ? out.map(({d,hits})=>{ const sn=snippet(d,hits); return `<article class="hit${d.brief?' brief':''}">
+   <div class="hit-top"><span class="hit-date">${d.date}</span>${d.brief?'<span class="badge">简要</span>':''}${stars(d.stars)}</div>
+   <h3><a href="${d.url}">${hl(d.short,hits)}</a>${d.short!==d.title?` <span class="hit-en">${hl(d.title.replace(d.short+':','').replace(/^\s*/,''),hits)}</span>`:''}</h3>
+   ${d.zh?`<div class="hit-zh">${hl(d.zh,hits)}</div>`:''}
+   <div class="hit-meta">${d.aff?esc(d.aff)+' · ':''}arXiv:${d.id}</div>
+   <div class="chips">${d.tags.map(t=>`<span class="chip">${hl(t,hits)}</span>`).join('')}</div>
+   <p class="snip"><span class="sf">${FN[sn.f]}</span>${sn.html}</p>
+   <div class="actions"><a class="btn sm" href="${d.url}">查看本期解读 →</a><a class="btn ghost sm" href="${d.arxiv}" target="_blank" rel="noopener">arXiv ↗</a><a class="btn ghost sm" href="${d.hjfy}" target="_blank" rel="noopener">中文 PDF（幻觉翻译）↗</a>${d.code?`<a class="btn ghost sm" href="${d.code}" target="_blank" rel="noopener">代码/项目页 ↗</a>`:''}</div>
+  </article>`; }).join('') : '<div class="empty">没有找到结果。试试更少的关键词、英文/中文同义词，或清空筛选。</div>';
+  if(push){ const u=new URL(location.href); raw?u.searchParams.set('q',raw):u.searchParams.delete('q'); history.replaceState(null,'',u); }
+}
+let tm; q.addEventListener('input',()=>{clearTimeout(tm); tm=setTimeout(run,80);});
+['from','to','minstars','sort','brief'].forEach(id=>$(id).addEventListener('change',()=>run()));
+$('reset').onclick=()=>{q.value='';$('from').value='';$('to').value='';$('minstars').value='0';$('sort').value='rel';$('brief').checked=true;selTags.clear();document.querySelectorAll('.tagbtn.on').forEach(b=>b.classList.remove('on'));run();q.focus();};
+document.addEventListener('keydown',e=>{ if(e.key==='/' && document.activeElement!==q && !/input|select|textarea/i.test(document.activeElement.tagName)){e.preventDefault();q.focus();q.select();} if(e.key==='Escape' && document.activeElement===q){q.value='';run();} });
+const p=new URLSearchParams(location.search); if(p.get('q')) q.value=p.get('q');
+run(false); if(!p.get('q')) q.focus();
+})();
+</script>

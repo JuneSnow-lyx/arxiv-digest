@@ -14,6 +14,9 @@
 | `scripts/render_digest.py` | JSON → 单期 HTML |
 | `scripts/add_digest.py` | 新增/替换一期：渲染页面 + 更新清单 + 重建目录 |
 | `scripts/build_index.py` | 仅根据 `digests.json` 重建 `index.html` |
+| `scripts/build_search.py` | 从 `data/*.json` 生成 `search-index.json` 与 `search.html`（索引内联，离线可用） |
+| `templates/search.html` | 搜索页模板（含同义词表 `SYN`、字段权重 `W`，可按需增补） |
+| `search.html` / `search-index.json` | 站内搜索页与索引（自动生成，勿手改） |
 
 ## 每日新增一期
 
@@ -28,7 +31,14 @@ python3 scripts/render_digest.py data/YYYY-MM-DD.json --no-back -o /workspace/ar
 git add -A && git commit -m "digest: YYYY-MM-DD" && git push
 ```
 
-同一天重复运行会覆盖该期。推送后 GitHub Pages 约 1 分钟内更新。
+`add_digest.py` 会依次：渲染本期页面 → 更新 `digests.json` → 重建 `index.html` → 重建搜索索引与 `search.html`。同一天重复运行会覆盖该期。
+
+### 链接规则（模板自动生成）
+- arXiv 摘要：`https://arxiv.org/abs/<id>`
+- 中文 PDF（幻觉翻译）：`https://hjfy.top/arxiv/<id>`（`scripts/common.py` 的 `hjfy()`）。已翻译的论文直接打开中英对照阅读器；尚未翻译的会提示登录后自动创建翻译任务。
+
+### 搜索
+`search.html?q=关键词` 可分享；支持中英混合、空格分隔多词 AND、大小写/全半角不敏感、英文前缀与 1 个字符的拼写容错、同义词扩展；字段加权（短名/标题/标签 > 方法 > 其他）；可按标签、日期、推荐指数筛选，按相关度/日期/推荐排序；按 `/` 聚焦。“其他值得一瞥”条目以“简要”标注。推送后 GitHub Pages 约 1 分钟内更新。
 
 ## JSON 字段
 
