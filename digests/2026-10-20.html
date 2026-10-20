@@ -1,114 +1,128 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>视频生成后训练 · arXiv 每日精选 · 2026-10-20</title><style>
-/* 共享样式：Claude 风格（温和、克制、阅读感）+ 淡蓝色调。由 scripts/*.py 内联进页面。 */
+/* 共享样式：Claude 风格（温和、克制、阅读感）+ 淡蓝色调；紧凑布局。由 scripts/*.py 内联进页面。 */
 :root{
   --bg:#f4f7fb; --paper:#fbfcfe; --card:#ffffff;
-  --ink:#1f2a37; --ink2:#3d4b5c; --muted:#6b7a8c; --faint:#94a3b4;
-  --line:#dde5ef; --line2:#e8eef5;
-  --blue:#2b6cb0; --blue-d:#1e4f86; --blue-l:#e6f0fb; --blue-ll:#f1f6fc;
-  --mark-y:#fdf1c4; --mark-b:#d9e9fa;
+  --ink:#1f2a37; --ink2:#3a4859; --muted:#647487; --faint:#94a3b4;
+  --line:#dde5ef; --line2:#e9eff6;
+  --blue:#2b6cb0; --blue-d:#1e4f86; --blue-l:#e6f0fb; --blue-ll:#f2f7fd;
+  --mark-y:#fcefbf; --mark-b:#d8e8fa;
   --serif:"Tiempos Headline","Tiempos","Source Serif 4","Source Serif Pro",Georgia,"Noto Serif SC","Noto Serif CJK SC","Songti SC","STSong","SimSun",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Noto Sans SC","Noto Sans CJK SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
   --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,"Noto Sans Mono CJK SC",monospace;
+  --measure:46em;            /* 正文最大行宽，约 46 个汉字 */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.78;letter-spacing:.01em;min-height:100vh;
-  background-image:radial-gradient(1200px 500px at 50% -200px,#e3eefb 0,rgba(227,238,251,0) 70%)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.65;letter-spacing:.015em;
+  text-autospace:normal;text-spacing-trim:space-first;font-kerning:normal;min-height:100vh;
+  background-image:radial-gradient(1400px 420px at 50% -180px,#e2edfb 0,rgba(226,237,251,0) 70%)}
+p{margin:0 0 .55em} p:last-child{margin-bottom:0}
 a{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(43,108,176,.25)}
 a:hover{color:var(--blue-d);border-bottom-color:var(--blue-d)}
-.wrap{max-width:760px;margin:0 auto;padding:40px 22px 72px}
-.topbar{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--muted);margin-bottom:44px}
+.wrap{max-width:1080px;margin:0 auto;padding:22px 28px 40px}
+.topbar{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--muted);margin-bottom:18px}
 .topbar a{border:none;color:var(--ink2)} .topbar a:hover{color:var(--blue)}
 .brand{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-size:15px;color:var(--ink2)}
-.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px var(--blue-l)}
-.eyebrow{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:var(--blue-l);border:1px solid #cfe0f4;border-radius:999px;padding:3px 12px}
-h1,h2,h3,h4{font-family:var(--serif);font-weight:500;color:var(--ink);letter-spacing:-.005em}
-h1.title{font-size:40px;line-height:1.22;margin:18px 0 14px}
-.lede{font-size:17.5px;color:var(--ink2);margin:0 0 22px}
-.facts{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13.5px;color:var(--muted);padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);background:var(--blue-l);border:1px solid #cfe0f4;border-radius:999px;padding:1px 11px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);letter-spacing:.005em}
+h1.title{font-size:32px;line-height:1.3;margin:10px 0 6px}
+.lede{font-size:16px;color:var(--ink2);margin:0 0 12px;max-width:var(--measure)}
+.facts{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:13.5px;color:var(--muted);padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .facts b{color:var(--ink2);font-weight:600}
 b,strong{font-weight:650;color:var(--ink)}
-mark{background:linear-gradient(transparent 38%,var(--mark-y) 38%,var(--mark-y) 92%,transparent 92%);color:inherit;padding:0 .12em;border-radius:2px}
-mark.blue{background:linear-gradient(transparent 38%,var(--mark-b) 38%,var(--mark-b) 92%,transparent 92%)}
-code{font-family:var(--mono);font-size:.86em;background:var(--blue-ll);border:1px solid var(--line2);border-radius:5px;padding:1px 6px;color:var(--blue-d);white-space:normal;word-break:break-word}
-.section-h{font-size:24px;margin:52px 0 6px}
-.section-sub{color:var(--muted);font-size:14px;margin:0 0 18px}
-.overview{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-top:30px}
-.overview h2{font-size:21px;margin:0 0 8px}
-.overview p{margin:10px 0}
-.toc{margin-top:26px;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden}
-.toc .toc-h{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:12px 20px;border-bottom:1px solid var(--line2);background:var(--blue-ll)}
-.toc ol{list-style:none;margin:0;padding:6px 0}
-.toc li a{display:flex;gap:14px;align-items:baseline;padding:9px 20px;border:none;color:var(--ink)}
+mark{background:linear-gradient(transparent 40%,var(--mark-y) 40%,var(--mark-y) 92%,transparent 92%);color:inherit;padding:0 .1em;border-radius:2px}
+mark.blue{background:linear-gradient(transparent 40%,var(--mark-b) 40%,var(--mark-b) 92%,transparent 92%)}
+code{font-family:var(--mono);font-size:.86em;letter-spacing:0;background:var(--blue-ll);border:1px solid var(--line2);border-radius:4px;padding:0 5px;color:var(--blue-d);white-space:normal;word-break:break-word}
+.section-h{font-size:21px;margin:28px 0 2px}
+.section-sub{color:var(--muted);font-size:13.5px;margin:0 0 10px}
+/* 今日看点：两栏段落 */
+.overview{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 20px 16px;margin-top:16px}
+.overview h2{font-size:18px;margin:0 0 6px}
+.ov-cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
+.ov-cols p{margin:0}
+/* 本期目录：两列网格 */
+.toc{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.toc .toc-h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:7px 16px;border-bottom:1px solid var(--line2);background:var(--blue-ll)}
+.toc ol{list-style:none;margin:0;padding:4px 6px;display:grid;grid-template-columns:1fr 1fr;column-gap:8px}
+.toc li a{display:flex;gap:10px;align-items:baseline;padding:5px 10px;border:none;border-radius:8px;color:var(--ink)}
 .toc li a:hover{background:var(--blue-ll)}
-.toc .n{font-family:var(--serif);color:var(--blue);min-width:22px}
+.toc .n{font-family:var(--serif);color:var(--blue);min-width:20px}
 .toc .t{flex:1;font-weight:600}
 .toc .k{font-size:12.5px;color:var(--muted);white-space:nowrap}
-.paper{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:30px 32px 26px;margin-top:26px;scroll-margin-top:20px}
+/* 论文卡片：主栏（问题/方法）+ 侧栏（设置/结果/为什么/链接） */
+.paper{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px 18px;margin-top:14px;scroll-margin-top:12px}
 .paper-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
-.paper-no{font-family:var(--serif);font-size:15px;color:var(--blue)}
-.stars{color:#d9a21b;letter-spacing:1.5px;font-size:14px;white-space:nowrap} .stars .off{color:#dfe5ec} .stars .sc{color:var(--muted);letter-spacing:0;margin-left:4px}
-.paper h3.en{font-size:24px;line-height:1.35;margin:12px 0 6px}
-.paper .zh{font-size:16px;color:var(--ink2);margin:0 0 14px}
-.meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13.5px;color:var(--muted);margin-bottom:12px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
-.chip{font-size:12.5px;color:var(--blue-d);background:var(--blue-l);border:1px solid #d3e3f5;border-radius:999px;padding:1px 11px}
-.blk{margin-top:22px}
-.blk-h{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:17px;color:var(--ink);margin-bottom:6px}
-.blk-h:before{content:"";width:4px;height:17px;border-radius:2px;background:var(--blue)}
-.blk p{margin:6px 0}
-.comp{list-style:none;padding:0;margin:12px 0 4px;counter-reset:c}
-.comp li{position:relative;padding:12px 16px 12px 46px;margin:10px 0;background:var(--blue-ll);border:1px solid var(--line2);border-radius:12px;counter-increment:c}
-.comp li:before{content:counter(c);position:absolute;left:14px;top:13px;width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid #c7dbf2;color:var(--blue);font-family:var(--serif);font-size:13px;line-height:20px;text-align:center}
-.comp .cn{display:block;font-weight:650;color:var(--blue-d);margin-bottom:2px}
-.setup{margin-top:12px;font-size:14.5px;color:var(--ink2);padding:10px 14px;border-left:3px solid #b8d2ee;background:#fafcff;border-radius:0 8px 8px 0}
-.results{background:#fffdf5;border:1px solid #f1e6bf;border-radius:12px;padding:12px 16px}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line2)}
-.btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;padding:7px 16px;border-radius:10px;border:1px solid var(--blue);background:var(--blue);color:#fff}
+.paper-no{font-family:var(--serif);font-size:14px;color:var(--blue)}
+.stars{color:#d9a21b;letter-spacing:1px;font-size:14px;white-space:nowrap} .stars .off{color:#dfe5ec} .stars .sc{color:var(--muted);letter-spacing:0;margin-left:4px}
+.paper h3.en{font-size:21px;line-height:1.35;margin:4px 0 2px}
+.paper .zh{font-size:15px;color:var(--ink2);margin:0 0 6px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;font-size:13px;color:var(--muted);margin-bottom:4px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 2px}
+.chip{font-size:12.5px;line-height:1.6;color:var(--blue-d);background:var(--blue-l);border:1px solid #d3e3f5;border-radius:999px;padding:0 10px}
+.paper-body{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)}
+.main{max-width:var(--measure)}
+.side{display:flex;flex-direction:column;gap:10px;font-size:14.5px;line-height:1.62}
+.blk{margin-top:12px} .main .blk:first-child,.side .blk{margin-top:0}
+.blk-h{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-weight:600;font-size:15.5px;color:var(--ink);margin-bottom:3px}
+.blk-h:before{content:"";width:3px;height:14px;border-radius:2px;background:var(--blue)}
+.comp{list-style:none;padding:0;margin:6px 0 0;counter-reset:c}
+.comp li{position:relative;padding:7px 12px 8px 38px;margin:6px 0;background:var(--blue-ll);border:1px solid var(--line2);border-radius:10px;counter-increment:c}
+.comp li:before{content:counter(c);position:absolute;left:11px;top:9px;width:19px;height:19px;border-radius:50%;background:#fff;border:1px solid #c7dbf2;color:var(--blue);font-family:var(--serif);font-size:12px;line-height:17px;text-align:center}
+.comp .cn{display:block;font-weight:650;color:var(--blue-d);margin-bottom:1px}
+.side-h{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:2px}
+.setup{color:var(--ink2);padding:8px 12px;border-left:3px solid #b8d2ee;background:#fafcff;border-radius:0 8px 8px 0}
+.results{background:#fffcf2;border:1px solid #f0e4bb;border-radius:10px;padding:8px 12px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;padding:4px 13px;border-radius:9px;border:1px solid var(--blue);background:var(--blue);color:#fff}
 .btn:hover{background:var(--blue-d);border-color:var(--blue-d);color:#fff}
 .btn.ghost{background:#fff;color:var(--blue);border-color:#bcd4ef}
 .btn.ghost:hover{background:var(--blue-ll);color:var(--blue-d)}
-.others{margin-top:18px;padding:0;list-style:none}
-.others li{padding:12px 0;border-bottom:1px solid var(--line2)}
+.others{margin:4px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.others li{padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:14.5px}
 .others li a{font-weight:600}
-.others .d{display:block;color:var(--ink2);font-size:14.5px}
-footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center;line-height:1.9}
-.back-top{display:inline-block;margin-top:10px;font-size:13px}
+.others .d{display:block;color:var(--ink2);font-size:14px;margin-top:3px}
+footer{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center;line-height:1.8}
 /* 目录页 */
-.issues{margin-top:34px}
-.issue{display:block;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:22px 26px;margin-top:16px;color:var(--ink);transition:border-color .15s,background .15s}
+.issues{margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.issue{display:block;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:14px 18px;color:var(--ink);transition:border-color .15s,background .15s}
 .issue:hover{border-color:#b9d2ee;background:#fdfeff;color:var(--ink)}
-.issue .d{font-family:var(--serif);font-size:21px;color:var(--ink)}
-.issue .m{font-size:13.5px;color:var(--muted);margin-top:2px}
-.issue p{margin:10px 0 8px;color:var(--ink2)}
-.issue .go{font-size:14px;font-weight:600;color:var(--blue)}
-.issue.latest{border-color:#a9c8ea;background:linear-gradient(180deg,#f3f8fe,#fff 60%);padding:28px 30px}
-.issue.latest .d{font-size:27px}
-.badge{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--sans);font-size:12px;font-weight:600;color:#8a6400;background:var(--mark-y);border:1px solid #f0dc95;border-radius:999px;padding:1px 10px}
+.issue .d{font-family:var(--serif);font-weight:600;font-size:18px;color:var(--ink)}
+.issue .m{font-size:13px;color:var(--muted);margin-top:1px}
+.issue p{margin:6px 0 4px;color:var(--ink2);max-width:var(--measure)}
+.issue .go{font-size:13.5px;font-weight:600;color:var(--blue)}
+.issue.latest{grid-column:1/-1;border-color:#a9c8ea;background:linear-gradient(180deg,#f2f8fe,#fff 70%);padding:16px 22px}
+.issue.latest .d{font-size:22px}
+.badge{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--sans);font-size:12px;font-weight:600;color:#8a6400;background:var(--mark-y);border:1px solid #f0dc95;border-radius:999px;padding:0 9px}
+@media (max-width:900px){
+  .paper-body{grid-template-columns:1fr;gap:12px}
+  .others{grid-template-columns:1fr}
+}
 @media (max-width:640px){
-  body{font-size:16px}
-  .wrap{padding:24px 16px 56px}
-  .topbar{margin-bottom:28px}
-  h1.title{font-size:30px}
-  .lede{font-size:16.5px}
-  .paper{padding:22px 18px 20px;border-radius:14px}
-  .paper h3.en{font-size:20px}
-  .overview{padding:18px}
-  .comp li{padding:11px 12px 11px 42px}
+  body{font-size:15.5px}
+  .wrap{padding:16px 14px 36px}
+  .topbar{margin-bottom:12px}
+  h1.title{font-size:25px}
+  .lede{font-size:15.5px}
+  .ov-cols,.toc ol,.issues{grid-template-columns:1fr}
+  .paper{padding:16px 14px;border-radius:12px}
+  .paper h3.en{font-size:18.5px}
+  .overview{padding:12px 14px}
+  .comp li{padding:7px 10px 8px 36px}
   .toc .k{display:none}
-  .issue,.issue.latest{padding:18px}
-  .issue.latest .d{font-size:23px}
+  .issue,.issue.latest{padding:14px}
+  .issue.latest .d{font-size:20px}
 }
 
 </style></head><body>
 <div class="wrap">
 <div class="topbar"><span class="brand"><span class="dot"></span>arXiv 每日精选</span><a href="../index.html">← 返回往期目录</a></div>
 <span class="eyebrow">Video Generation · Post-Training</span>
-<h1 class="title">视频生成后训练<br>每日论文精选</h1>
+<h1 class="title">视频生成后训练 · 每日论文精选</h1>
 <p class="lede">聚焦视频生成模型的后训练：蒸馏、少步采样、缓存、稀疏注意力、量化，以及 RL / 偏好对齐与长视频生成效率。</p>
 <div class="facts"><span><b>2026 年 10 月 20 日</b>（周二）</span><span>覆盖：arXiv 2026-10-20（周二）公告批次 · 论文提交于 10-19</span><span>分类：cs.CV / cs.LG / cs.MM / eess.IV</span><span>精选 <b>8</b> 篇</span></div>
-<section class="overview"><h2>今日看点</h2><p>今天这批的主线非常清晰：<mark>自回归 / 流式视频生成的“又快又不漂”</mark>。字节 Seed 的 <b>TriTD</b> 用三部分联合蒸馏把 Wan2.1-1.3B 推到 <mark>单卡 H100 26.8 FPS</mark>；<b>DASA</b> 借鉴视频编码的思想，只在运动区域上花算力；<b>Clean Forcing</b> 与 <b>Fréchet Forcing</b> 则分别用 5.9M 参数的 LoRA 校正器和“无教师”的 Fréchet 距离约束，以极低成本压住长视频漂移。</p><p>免训练加速方面，<mark class="blue">“缓存 × 稀疏 / 预测”的组合与纠错</mark>成为新热点：<b>RECAP</b> 让稀疏注意力与两级缓存互相校正（HunyuanVideo 3.05×，已开源），<b>SpecKCast</b> 在频域用卡尔曼滤波做输出预测（视频上约 3–4×，图像最高 6×），<b>PoSTCache</b> 借用贝叶斯平滑让后面的完整计算“回头修正”被跳过的步。对齐方向则有斯坦福 <b>FluidGen</b>：把模型自己预测的速度场做成物理奖励，再做 DPO。</p></section>
+<section class="overview"><h2>今日看点</h2><div class="ov-cols"><p>今天这批的主线非常清晰：<mark>自回归 / 流式视频生成的“又快又不漂”</mark>。字节 Seed 的 <b>TriTD</b> 用三部分联合蒸馏把 Wan2.1-1.3B 推到 <mark>单卡 H100 26.8 FPS</mark>；<b>DASA</b> 借鉴视频编码的思想，只在运动区域上花算力；<b>Clean Forcing</b> 与 <b>Fréchet Forcing</b> 则分别用 5.9M 参数的 LoRA 校正器和“无教师”的 Fréchet 距离约束，以极低成本压住长视频漂移。</p><p>免训练加速方面，<mark class="blue">“缓存 × 稀疏 / 预测”的组合与纠错</mark>成为新热点：<b>RECAP</b> 让稀疏注意力与两级缓存互相校正（HunyuanVideo 3.05×，已开源），<b>SpecKCast</b> 在频域用卡尔曼滤波做输出预测（视频上约 3–4×，图像最高 6×），<b>PoSTCache</b> 借用贝叶斯平滑让后面的完整计算“回头修正”被跳过的步。对齐方向则有斯坦福 <b>FluidGen</b>：把模型自己预测的速度场做成物理奖励，再做 DPO。</p></div></section>
 <nav class="toc"><div class="toc-h">本期目录 · 点击跳转</div><ol>
 <li><a href="#p1"><span class="n">01</span><span class="t">TriTD</span><span class="k">蒸馏 · DMD</span></a></li>
 <li><a href="#p2"><span class="n">02</span><span class="t">RECAP</span><span class="k">稀疏注意力 · 特征缓存</span></a></li>
@@ -125,11 +139,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">TriTD：面向实时自回归视频生成的“轨迹-分布”三部分联合蒸馏</p>
 <div class="meta"><span>🏛 香港大学、字节跳动 Seed、清华大学</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.26165</span></div>
 <div class="chips"><span class="chip">蒸馏</span><span class="chip">DMD</span><span class="chip">自回归视频</span><span class="chip">实时生成</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>自回归（AR）视频扩散按块（chunk）生成、用 KV Cache 承接历史，但 Self-Forcing 一类蒸馏方案存在两处“训练-推理不一致”：训练时每块的退出时间步随机采样，推理时却总走完整链；而且每块去噪后还要<b>额外跑一次前向</b>（t=0）来刷新干净的 KV Cache，4 步生成实际要 5 次 NFE。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>作者先给出单块误差上界 <code>e<sub>c</sub> ≤ ε + κ·|σ<sub>inf</sub>(c) − σ<sub>tr</sub>(c)| + L·e<sub>c−1</sub></code>，把误差拆成<b>基座误差 ε</b>、<b>训练-推理噪声失配</b>、<b>上游误差传播</b>三项，并推出累积误差中越靠前的块权重越大。三个模块分别针对前两项和 DMD 本身的不稳定：</p><ol class="comp"><li><span class="cn">Next-Node Trajectory Distillation（NTD）</span>ODE 初始化阶段不再让学生直接回归教师轨迹终点 x₀（L2），而是回归教师 ODE 轨迹上的<b>下一个节点</b> x<sub>t<sub>i+1</sub></sub>，并改用对离群点更鲁棒的 L1。论文证明（Lemma 2）其回归误差下界严格更低，从而压低 ε。</li><li><span class="cn">Chunk-Graded Noising（CGN）</span>两条约束：<b>Clean Start</b>（第一块训练时噪声恒为 0，与推理一致）和 <b>Sorted Noise</b>（后续各块的起始/退出时间步单调不减，模拟推理时误差沿块累积）。模型因此学会直接用“带噪”的上下文，推理时可<mark>彻底跳过每块结束后的 KV Cache 重算</mark>，4 步即 4 NFE。</li><li><span class="cn">Orthogonal-Parallel DMD（OP-DMD）</span>标准 DMD 只沿梯度方向 r = x̂<sub>real</sub> − x̂<sub>fake</sub> 提供监督，正交子空间无约束，会产生“离轴漂移”与训练震荡。OP-DMD 把学生与教师预测之差 δ 分解为平行分量和正交分量，额外加 L1 惩罚：<code>L = L<sub>DMD</sub> + λ<sub>⊥</sub>R(δ<sub>⊥</sub>) + λ<sub>∥</sub>R(α)</code>，λ<sub>∥</sub>=1e-4 ≪ λ<sub>⊥</sub>=0.01。</li></ol><div class="setup">⚙️ 需要训练（ODE 初始化 + DMD 蒸馏两阶段，CGN 贯穿始终）。基座 <b>Wan2.1-1.3B</b>（832×480，5 秒），先按 CausVid 做块因果微调；学生每块 3 帧、4 步去噪。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>自回归（AR）视频扩散按块（chunk）生成、用 KV Cache 承接历史，但 Self-Forcing 一类蒸馏方案存在两处“训练-推理不一致”：训练时每块的退出时间步随机采样，推理时却总走完整链；而且每块去噪后还要<b>额外跑一次前向</b>（t=0）来刷新干净的 KV Cache，4 步生成实际要 5 次 NFE。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>作者先给出单块误差上界 <code>e<sub>c</sub> ≤ ε + κ·|σ<sub>inf</sub>(c) − σ<sub>tr</sub>(c)| + L·e<sub>c−1</sub></code>，把误差拆成<b>基座误差 ε</b>、<b>训练-推理噪声失配</b>、<b>上游误差传播</b>三项，并推出累积误差中越靠前的块权重越大。三个模块分别针对前两项和 DMD 本身的不稳定：</p><ol class="comp"><li><span class="cn">Next-Node Trajectory Distillation（NTD）</span>ODE 初始化阶段不再让学生直接回归教师轨迹终点 x₀（L2），而是回归教师 ODE 轨迹上的<b>下一个节点</b> x<sub>t<sub>i+1</sub></sub>，并改用对离群点更鲁棒的 L1。论文证明（Lemma 2）其回归误差下界严格更低，从而压低 ε。</li><li><span class="cn">Chunk-Graded Noising（CGN）</span>两条约束：<b>Clean Start</b>（第一块训练时噪声恒为 0，与推理一致）和 <b>Sorted Noise</b>（后续各块的起始/退出时间步单调不减，模拟推理时误差沿块累积）。模型因此学会直接用“带噪”的上下文，推理时可<mark>彻底跳过每块结束后的 KV Cache 重算</mark>，4 步即 4 NFE。</li><li><span class="cn">Orthogonal-Parallel DMD（OP-DMD）</span>标准 DMD 只沿梯度方向 r = x̂<sub>real</sub> − x̂<sub>fake</sub> 提供监督，正交子空间无约束，会产生“离轴漂移”与训练震荡。OP-DMD 把学生与教师预测之差 δ 分解为平行分量和正交分量，额外加 L1 惩罚：<code>L = L<sub>DMD</sub> + λ<sub>⊥</sub>R(δ<sub>⊥</sub>) + λ<sub>∥</sub>R(α)</code>，λ<sub>∥</sub>=1e-4 ≪ λ<sub>⊥</sub>=0.01。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div>需要训练（ODE 初始化 + DMD 蒸馏两阶段，CGN 贯穿始终）。基座 <b>Wan2.1-1.3B</b>（832×480，5 秒），先按 CausVid 做块因果微调；学生每块 3 帧、4 步去噪。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">VBench（MovieGen 前 128 条提示）质量分 <mark>83.59</mark>，为所有对比方法最高；单张 H100 吞吐 <mark>26.8 FPS（torch.compile）/ 22.2 FPS（不编译）</mark>，FPS 只统计扩散主干、不含 VAE 解码。仅用 4 NFE 即超过 5 NFE 的 Self-Forcing（+1.26）和 Causal-Forcing（+0.68）。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>字节 Seed 出品，对 Self-Forcing / DMD 这一路自回归蒸馏做了<b>有理论支撑、可逐项消融</b>的系统改进；CGN“去掉额外前向”的技巧几乎零成本，值得直接借鉴。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26165" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26165" target="_blank" rel="noopener">PDF ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26165" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26165" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p2">
 <div class="paper-top"><span class="paper-no">No. 02</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -137,11 +152,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">RECAP：稀疏注意力与分层缓存“互惠校正”的高效视频扩散</p>
 <div class="meta"><span>🏛 上海交通大学、剑桥大学（通讯作者 张宇伦）</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.26244</span></div>
 <div class="chips"><span class="chip">稀疏注意力</span><span class="chip">特征缓存</span><span class="chip">免训练</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>稀疏注意力（省单步内计算）和时间步缓存（省跨步计算）天然可以叠加，但叠加后<b>稀疏预测会成为后续缓存复用的“源”</b>，稀疏误差会被复用多步。作者实验发现：把缓存源换成稠密结果能明显降低偏差；而且相邻步的稀疏化误差<b>方向高度一致</b>——一次稠密校正可以服务多次稀疏计算。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>据此构建<b>两级缓存</b>，每步在三种动作中选一：直接外推复用预测、做“带校正的稀疏计算”、或做一次稠密刷新（dense refresh）。</p><ol class="comp"><li><span class="cn">注意力级缓存：粗尾估计 + 缓存稠密残差</span>把每个 query 的 key 分成精确计算的选中块 H 和省略的尾部 T。尾部先用块均值加二阶矩修正得到粗估计（log-mass 与输出）；稠密刷新时算出真实尾部与粗估计之差 d<sub>h</sub> 并缓存，之后的稀疏步用“新鲜粗估计 + 旧残差”重建，误差只取决于残差本身的变化。</li><li><span class="cn">漂移加权（Drift-weighted refinement）</span>随着复用步数增加，旧残差会过时。用当前粗统计相对刷新时的偏移（按 query 行去中心化）计算权重 a<sub>t</sub>，自动减弱过时残差的作用，无需额外超参。</li><li><span class="cn">预测级缓存：增益拟合外推</span>用最近两次计算的预测估计变化率，<code>p̂<sub>t</sub> = p<sub>s</sub> + α<sub>s</sub>(t−s)v<sub>s</sub></code>，增益 α 用在线累积最小二乘拟合；被校正过的稀疏预测会更新这一历史，使一次稠密刷新可以支撑多次稀疏计算和其后的复用。</li><li><span class="cn">误差反馈的在线调度</span>预测误差决定“何时算”（在固定预算 B 内自适应拉长或缩短复用间隔），稠密刷新时的校验误差决定“是否需要稠密算”，无需离线搜索调度表。</li></ol><div class="setup">⚙️ <b>免训练</b>，配合 FlashAttention-2、Block-Sparse Attention 与自定义 Triton 内核。评测 <b>CogVideoX-1.5-5B、HunyuanVideo-13B、Wan2.1-1.3B</b>（均 50 步），附录扩展到 FLUX.1-dev。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>稀疏注意力（省单步内计算）和时间步缓存（省跨步计算）天然可以叠加，但叠加后<b>稀疏预测会成为后续缓存复用的“源”</b>，稀疏误差会被复用多步。作者实验发现：把缓存源换成稠密结果能明显降低偏差；而且相邻步的稀疏化误差<b>方向高度一致</b>——一次稠密校正可以服务多次稀疏计算。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>据此构建<b>两级缓存</b>，每步在三种动作中选一：直接外推复用预测、做“带校正的稀疏计算”、或做一次稠密刷新（dense refresh）。</p><ol class="comp"><li><span class="cn">注意力级缓存：粗尾估计 + 缓存稠密残差</span>把每个 query 的 key 分成精确计算的选中块 H 和省略的尾部 T。尾部先用块均值加二阶矩修正得到粗估计（log-mass 与输出）；稠密刷新时算出真实尾部与粗估计之差 d<sub>h</sub> 并缓存，之后的稀疏步用“新鲜粗估计 + 旧残差”重建，误差只取决于残差本身的变化。</li><li><span class="cn">漂移加权（Drift-weighted refinement）</span>随着复用步数增加，旧残差会过时。用当前粗统计相对刷新时的偏移（按 query 行去中心化）计算权重 a<sub>t</sub>，自动减弱过时残差的作用，无需额外超参。</li><li><span class="cn">预测级缓存：增益拟合外推</span>用最近两次计算的预测估计变化率，<code>p̂<sub>t</sub> = p<sub>s</sub> + α<sub>s</sub>(t−s)v<sub>s</sub></code>，增益 α 用在线累积最小二乘拟合；被校正过的稀疏预测会更新这一历史，使一次稠密刷新可以支撑多次稀疏计算和其后的复用。</li><li><span class="cn">误差反馈的在线调度</span>预测误差决定“何时算”（在固定预算 B 内自适应拉长或缩短复用间隔），稠密刷新时的校验误差决定“是否需要稠密算”，无需离线搜索调度表。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div><b>免训练</b>，配合 FlashAttention-2、Block-Sparse Attention 与自定义 Triton 内核。评测 <b>CogVideoX-1.5-5B、HunyuanVideo-13B、Wan2.1-1.3B</b>（均 50 步），附录扩展到 FLUX.1-dev。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">HunyuanVideo 720p、5 秒生成上 <mark>3.05× 加速</mark>，保真度和速度均优于所有测试的“稀疏 + 缓存”直接组合（SVOO/DFSAttn × TeaCache/LeMiCa/NaviCache）。常规加速区间：RECAP-Quality 相对最强单一基线 PSNR <b>+3.74 dB（CogVideoX-1.5）/ +1.42 dB（HunyuanVideo）</b>；RECAP-Speed 加速 <b>1.75× / 2.14×</b>。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>“稀疏 × 缓存”如何正确组合是工程落地的真问题；本文给出的是有实验动机、可即插即用的方案，<b>代码已开源</b>。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26244" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26244" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://github.com/lyraxtg/RECAP" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26244" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26244" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://github.com/lyraxtg/RECAP" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p3">
 <div class="paper-top"><span class="paper-no">No. 03</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -149,11 +165,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">SpecKCast：基于频谱卡尔曼预测的扩散加速</p>
 <div class="meta"><span>🏛 多伦多大学、Vector Institute、三星多伦多 AI 中心</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.26837</span></div>
 <div class="chips"><span class="chip">特征预测/缓存</span><span class="chip">免训练</span><span class="chip">DiT 加速</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>TaylorSeer、Spectrum 等“特征预测（forecasting）”方法把输出当作一个整体、用统一规则外推，并以步序号作时间轴。但作者观察到：<b>低频成分在前几步剧烈变化后趋稳，高频成分则在后期才快速演化</b>；且每步实际去噪量并不均匀——跳得越多误差越大。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>直接预测采样器消费的<b>最终速度输出</b>（而非中间特征），在频域对每个系数单独建模，并用不确定性决定何时真正调用 Transformer：</p><ol class="comp"><li><span class="cn">空间频率分解</span>对输出 Y<sub>j</sub> 逐通道做正交 2D DCT，按半径把频率平面分为 L=7 个频带；每个 DCT 系数是一个独立的时间信号，跳过的步上预测出 Ẑ<sub>j</sub> 后再做 IDCT 交给采样器。</li><li><span class="cn">分频带的去噪时间坐标</span>时间轴不用步序号，而用噪声调度的对数信噪比 λ<sub>j</sub>，并按各频带校准的信号功率做非线性扭曲、再缩放到 [−1,1]，使坐标在该频带“活跃”时走得快、稳定时走得慢。</li><li><span class="cn">卡尔曼滤波跟踪</span>每个系数状态为（值 m，导数 ν），按 <code>m<sub>j</sub> = m<sub>j−1</sub> + Δ·ν<sub>j−1</sub></code> 推进，导数以 e<sup>−Δ/τ</sup> 衰减以防长跳时过冲；计算步做卡尔曼更新，同频带共享协方差，只需维护 L 个 2×2 矩阵。</li><li><span class="cn">不确定性驱动调度</span>把各频带预测方差按系数数加权汇成标量风险 R(k)，一旦超过阈值 ε 就执行一次完整前向；ε 按目标算力预算标定。</li></ol><div class="setup">⚙️ <b>免训练</b>、即插即用，额外显存 &lt;0.05 GiB。评测 FLUX.1-dev、Qwen-Image 与视频模型 <b>Wan2.1-14B、HunyuanVideo</b>，以 50 步为参考，H100 上测试。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>TaylorSeer、Spectrum 等“特征预测（forecasting）”方法把输出当作一个整体、用统一规则外推，并以步序号作时间轴。但作者观察到：<b>低频成分在前几步剧烈变化后趋稳，高频成分则在后期才快速演化</b>；且每步实际去噪量并不均匀——跳得越多误差越大。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>直接预测采样器消费的<b>最终速度输出</b>（而非中间特征），在频域对每个系数单独建模，并用不确定性决定何时真正调用 Transformer：</p><ol class="comp"><li><span class="cn">空间频率分解</span>对输出 Y<sub>j</sub> 逐通道做正交 2D DCT，按半径把频率平面分为 L=7 个频带；每个 DCT 系数是一个独立的时间信号，跳过的步上预测出 Ẑ<sub>j</sub> 后再做 IDCT 交给采样器。</li><li><span class="cn">分频带的去噪时间坐标</span>时间轴不用步序号，而用噪声调度的对数信噪比 λ<sub>j</sub>，并按各频带校准的信号功率做非线性扭曲、再缩放到 [−1,1]，使坐标在该频带“活跃”时走得快、稳定时走得慢。</li><li><span class="cn">卡尔曼滤波跟踪</span>每个系数状态为（值 m，导数 ν），按 <code>m<sub>j</sub> = m<sub>j−1</sub> + Δ·ν<sub>j−1</sub></code> 推进，导数以 e<sup>−Δ/τ</sup> 衰减以防长跳时过冲；计算步做卡尔曼更新，同频带共享协方差，只需维护 L 个 2×2 矩阵。</li><li><span class="cn">不确定性驱动调度</span>把各频带预测方差按系数数加权汇成标量风险 R(k)，一旦超过阈值 ε 就执行一次完整前向；ε 按目标算力预算标定。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div><b>免训练</b>、即插即用，额外显存 &lt;0.05 GiB。评测 FLUX.1-dev、Qwen-Image 与视频模型 <b>Wan2.1-14B、HunyuanVideo</b>，以 50 步为参考，H100 上测试。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">HunyuanVideo 14-NFE 预算下比最强基线 SeaCache <mark>PSNR 高 2.1 dB</mark>，速度 <mark>3.33×</mark>（SeaCache 2.57×）；Wan2.1-14B 各预算下 VBench Quality 均为最佳，14-NFE 时与原模型差距在 0.25 分以内。图像上最高 <b>5.54×（FLUX）/ 6.00×（Qwen-Image）</b>，分别比最强基线高 1.1 / 2.0 dB。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>把“特征外推”升级为<b>频域 + 不确定性驱动的自适应计算</b>，思路优雅、开销极小，对任何 DiT 视频模型都可直接尝试。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26837" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26837" target="_blank" rel="noopener">PDF ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26837" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26837" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p4">
 <div class="paper-top"><span class="paper-no">No. 04</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -161,11 +178,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">DASA：面向高效自回归视频扩散的动态感知稀疏注意力</p>
 <div class="meta"><span>🏛 浙江大学、阿里巴巴、莫纳什大学</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.26262</span></div>
 <div class="chips"><span class="chip">稀疏计算</span><span class="chip">KV 缓存压缩</span><span class="chip">自回归视频</span><span class="chip">蒸馏</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>自回归视频 DiT 对所有时空区域平均分配算力和显存：滑动窗口会丢掉旧场景（回头时不一致），而背景等静态区域每块都在被重复去噪。现有加速如 TeaCache 在 4 步模型上空间有限（仅 1.18×）。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>借鉴 H.264 的 I 帧 / P 帧思想，把视频显式拆成<b>动态区域</b>和<b>静态区域</b>，从“存什么”和“算什么”两个正交维度去冗余：</p><ol class="comp"><li><span class="cn">逐帧记忆管理（Frame-wise Memory Management）</span>上一块最后一帧作为参考帧完整保留；其余 token 与相邻帧余弦相似度高于阈值 σ<sub>l</sub> 的不写入 KV Cache。σ<sub>l</sub> 随层深线性下降（深层语义稳定，保留更少）。再加<b>静态 token 刷新</b>：某位置连续被丢超过 τ 帧（取 τ=4）就强制写入，防止背景细节和光照变化“陈旧化”。</li><li><span class="cn">区域级计算分配（Motion-aware early exit）</span>当前块第一步去噪得到的 X̂<sub>C</sub> 与上一块在 w×w 局部窗口内做匹配（能跟踪运动物体，复杂度对序列长度线性）；最大相似度超过 γ（取 0.92）的 token 直接<b>早退</b>，复制上一块的对齐 token，只有动态 token 继续后续去噪。</li><li><span class="cn">动态引导蒸馏（Dynamics-Guided Distillation）</span>把上述机制放进训练后，模型会“偷懒”倾向于复制历史、动作变僵（static bias）。作者在 DMD 损失上按真实视频的时间相似度构造逐 token 权重，<b>运动越大的区域损失放大越多</b>，迫使模型学会生成真实动态。</li></ol><div class="setup">⚙️ 推理机制可直接使用，另有轻量蒸馏微调。集成到 <b>Self-Forcing 与 LongLive</b>，覆盖 5 秒、30 秒长视频以及 720P/1080P 高分辨率生成，H100 测试。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>自回归视频 DiT 对所有时空区域平均分配算力和显存：滑动窗口会丢掉旧场景（回头时不一致），而背景等静态区域每块都在被重复去噪。现有加速如 TeaCache 在 4 步模型上空间有限（仅 1.18×）。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>借鉴 H.264 的 I 帧 / P 帧思想，把视频显式拆成<b>动态区域</b>和<b>静态区域</b>，从“存什么”和“算什么”两个正交维度去冗余：</p><ol class="comp"><li><span class="cn">逐帧记忆管理（Frame-wise Memory Management）</span>上一块最后一帧作为参考帧完整保留；其余 token 与相邻帧余弦相似度高于阈值 σ<sub>l</sub> 的不写入 KV Cache。σ<sub>l</sub> 随层深线性下降（深层语义稳定，保留更少）。再加<b>静态 token 刷新</b>：某位置连续被丢超过 τ 帧（取 τ=4）就强制写入，防止背景细节和光照变化“陈旧化”。</li><li><span class="cn">区域级计算分配（Motion-aware early exit）</span>当前块第一步去噪得到的 X̂<sub>C</sub> 与上一块在 w×w 局部窗口内做匹配（能跟踪运动物体，复杂度对序列长度线性）；最大相似度超过 γ（取 0.92）的 token 直接<b>早退</b>，复制上一块的对齐 token，只有动态 token 继续后续去噪。</li><li><span class="cn">动态引导蒸馏（Dynamics-Guided Distillation）</span>把上述机制放进训练后，模型会“偷懒”倾向于复制历史、动作变僵（static bias）。作者在 DMD 损失上按真实视频的时间相似度构造逐 token 权重，<b>运动越大的区域损失放大越多</b>，迫使模型学会生成真实动态。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div>推理机制可直接使用，另有轻量蒸馏微调。集成到 <b>Self-Forcing 与 LongLive</b>，覆盖 5 秒、30 秒长视频以及 720P/1080P 高分辨率生成，H100 测试。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">5 秒视频 <b>1.53×</b>（TeaCache 仅 1.18×）；30 秒长视频最高 <b>1.45×</b>；加速随分辨率增大，<mark>1080P 下最高 2.16×</mark>。加入动态引导蒸馏后吞吐达 <b>27.58 FPS（1.50×）</b>且语义分最高。<b>已被 NeurIPS 2026 接收</b>。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>同时针对长视频自回归的<b>算力与显存</b>两大瓶颈，“只算会动的地方”直觉清晰，且与 TeaCache 等缓存方法正交可叠加。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26262" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26262" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://yuanyu0.github.io/DASA/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.26262" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.26262" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://yuanyu0.github.io/DASA/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p5">
 <div class="paper-top"><span class="paper-no">No. 05</span><span class="stars" title="推荐指数">★★★★<span style="opacity:.45">★</span><span class="off"></span><span class="sc">4.5</span></span></div>
@@ -173,11 +191,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">Clean Forcing：冻结基座下抗漂移的自回归视频扩散</p>
 <div class="meta"><span>🏛 首尔国立大学、美国东北大学、NVIDIA</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.25634</span></div>
 <div class="chips"><span class="chip">长视频</span><span class="chip">LoRA 后训练</span><span class="chip">曝光偏差</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>自回归视频在干净历史上训练、却以自己生成的有误差历史为条件推理（曝光偏差，exposure bias），几秒后就会漂移到过饱和、无纹理。现有方案要么重训基座（最强结果用 13.6 万段视频、16×H100），要么是推理时启发式修正、在 50 秒尺度上并不可靠。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>关键发现：在<b>同一个带噪状态 z<sub>t</sub></b> 下只替换历史（干净 vs 漂移），得到的速度差 <code>Δv = v<sub>θ</sub>(z<sub>t</sub>, h<sub>clean</sub>) − v<sub>θ</sub>(z<sub>t</sub>, h<sub>gen</sub>)</code> 在不同噪声种子间约 <mark>95% 是系统性的</mark>（三个基座上 0.89–0.99）——漂移是确定性的，因此可学。</p><ol class="comp"><li><span class="cn">反事实教师校正</span>冻结基座，只训练 rank-16 LoRA（自注意力投影上，<b>5.9M 参数，约基座 0.4%</b>）：学生在漂移历史下的速度去拟合冻结教师在干净历史下的速度，损失按原始漂移幅度归一化；LoRA B 矩阵零初始化，起点与基座完全一致。</li><li><span class="cn">闭环训练：DAgger 聚合</span>开启校正器后重新生成训练对并加入数据池，让校正器见到自己 rollout 时真正会遇到的状态，缓解协变量偏移。</li><li><span class="cn">漂移收缩（Drift contraction）</span>由校正后的速度估计 x̂₀ 并保留梯度接入历史，在下一块上计算归一化速度差（λ<sub>con</sub>=0.5），直接惩罚“这一步提交的预测对下一块造成的漂移”。</li><li><span class="cn">自教学，无需真实视频</span>干净历史可以由同一模型在双向单次生成模式下自己产生，所以只需提示词；也可用少量真实片段（40 段就够）。</li></ol><div class="setup">⚙️ 需要训练（约 <b>1 个 GPU 日</b>），LoRA 可合并进权重，<b>推理零额外开销</b>。主实验基座为轻度因果化的 <b>Wan2.1-1.3B</b>，并验证 Causal-Forcing 基座及 10 倍大的 <b>Wan2.1-T2V-14B</b>。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>自回归视频在干净历史上训练、却以自己生成的有误差历史为条件推理（曝光偏差，exposure bias），几秒后就会漂移到过饱和、无纹理。现有方案要么重训基座（最强结果用 13.6 万段视频、16×H100），要么是推理时启发式修正、在 50 秒尺度上并不可靠。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>关键发现：在<b>同一个带噪状态 z<sub>t</sub></b> 下只替换历史（干净 vs 漂移），得到的速度差 <code>Δv = v<sub>θ</sub>(z<sub>t</sub>, h<sub>clean</sub>) − v<sub>θ</sub>(z<sub>t</sub>, h<sub>gen</sub>)</code> 在不同噪声种子间约 <mark>95% 是系统性的</mark>（三个基座上 0.89–0.99）——漂移是确定性的，因此可学。</p><ol class="comp"><li><span class="cn">反事实教师校正</span>冻结基座，只训练 rank-16 LoRA（自注意力投影上，<b>5.9M 参数，约基座 0.4%</b>）：学生在漂移历史下的速度去拟合冻结教师在干净历史下的速度，损失按原始漂移幅度归一化；LoRA B 矩阵零初始化，起点与基座完全一致。</li><li><span class="cn">闭环训练：DAgger 聚合</span>开启校正器后重新生成训练对并加入数据池，让校正器见到自己 rollout 时真正会遇到的状态，缓解协变量偏移。</li><li><span class="cn">漂移收缩（Drift contraction）</span>由校正后的速度估计 x̂₀ 并保留梯度接入历史，在下一块上计算归一化速度差（λ<sub>con</sub>=0.5），直接惩罚“这一步提交的预测对下一块造成的漂移”。</li><li><span class="cn">自教学，无需真实视频</span>干净历史可以由同一模型在双向单次生成模式下自己产生，所以只需提示词；也可用少量真实片段（40 段就够）。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div>需要训练（约 <b>1 个 GPU 日</b>），LoRA 可合并进权重，<b>推理零额外开销</b>。主实验基座为轻度因果化的 <b>Wan2.1-1.3B</b>，并验证 Causal-Forcing 基座及 10 倍大的 <b>Wan2.1-T2V-14B</b>。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">50 秒文生视频（128 条 MovieGen 提示）Δ-drift 从 <mark>+11.3 降到 +1.65（无真实视频）</mark>、<mark>−0.16（40 段真实视频）</mark>，优于已发表最佳 +3.57，数据量少 <b>150 倍以上</b>；14B 基座上消除 94% 漂移。用户研究中 +real 版本相对基座胜率 93.0%、相对 Self Forcing 83.9%。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>极低成本的长视频后训练：不动基座、几乎不要数据、不增加推理成本，<b>性价比极高</b>，可直接套用到已发布的 AR 视频模型。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25634" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25634" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://clean-forcing.github.io/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25634" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25634" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://clean-forcing.github.io/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p6">
 <div class="paper-top"><span class="paper-no">No. 06</span><span class="stars" title="推荐指数">★★★★<span class="off">★</span><span class="sc">4</span></span></div>
@@ -185,11 +204,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">PoSTCache：从前向预测到“事后平滑”的可修正扩散缓存</p>
 <div class="meta"><span>🏛 清华大学（丁贵广、韩军功团队）</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.25664</span></div>
 <div class="chips"><span class="chip">特征缓存</span><span class="chip">免训练</span><span class="chip">即插即用</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>现有缓存加速都是“只向前”的：被跳过步的近似一旦写入采样轨迹就不再修改，误差沿后续步累积；而后面的完整计算步其实揭示了关于这些误差的新信息，却只被用来指导之后的采样。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>受贝叶斯平滑（RTS smoother）启发，把缓存重新表述为<b>可修正的轨迹推断</b>：平滑估计 = 前向估计 + 平滑增益 × 未来新息（innovation）。</p><ol class="comp"><li><span class="cn">事后平滑（Postdictive smoothing）</span>在两个完整计算锚点 a&lt;b 之间，先用任意已有缓存策略（默认直接复用）给出前向提议；到 b 时用真实预测与其提议之差 r<sub>b</sub> 作为新息，按 <code>û<sub>k</sub> = ũ<sub>k</sub> + w<sub>k</sub>·r<sub>b</sub></code> 反向修正中间各步，增益 w 随相对位置从 0 线性增至 1。实验显示这种简单增益保留了 oracle 标量增益 96–97% 的可解释误差。</li><li><span class="cn">轨迹重积分</span>只修正预测还不够，再用原采样器从锚点 a 起把修正后的预测重新积分一遍；只涉及廉价的求解器运算，不增加网络前向。</li><li><span class="cn">后验方差缩减锚点选择（PVR）</span>作者发现“局部误差最大的步”并不是最有校正价值的锚点（两者 Spearman 相关为负）。于是离线采集完整轨迹估计跨时间步协方差核 K，在给定预算下贪心选择使加权轨迹后验方差下降最多的锚点。</li></ol><div class="setup">⚙️ <b>免训练、即插即用</b>，可叠加在 MagCache、DiCache 等缓存方法之上。评测 FLUX.1-dev、Qwen-Image-2512，视频模型 <b>Wan 2.1-1.3B、CogVideoX-2B、OpenSora 1.2</b>。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>现有缓存加速都是“只向前”的：被跳过步的近似一旦写入采样轨迹就不再修改，误差沿后续步累积；而后面的完整计算步其实揭示了关于这些误差的新信息，却只被用来指导之后的采样。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>受贝叶斯平滑（RTS smoother）启发，把缓存重新表述为<b>可修正的轨迹推断</b>：平滑估计 = 前向估计 + 平滑增益 × 未来新息（innovation）。</p><ol class="comp"><li><span class="cn">事后平滑（Postdictive smoothing）</span>在两个完整计算锚点 a&lt;b 之间，先用任意已有缓存策略（默认直接复用）给出前向提议；到 b 时用真实预测与其提议之差 r<sub>b</sub> 作为新息，按 <code>û<sub>k</sub> = ũ<sub>k</sub> + w<sub>k</sub>·r<sub>b</sub></code> 反向修正中间各步，增益 w 随相对位置从 0 线性增至 1。实验显示这种简单增益保留了 oracle 标量增益 96–97% 的可解释误差。</li><li><span class="cn">轨迹重积分</span>只修正预测还不够，再用原采样器从锚点 a 起把修正后的预测重新积分一遍；只涉及廉价的求解器运算，不增加网络前向。</li><li><span class="cn">后验方差缩减锚点选择（PVR）</span>作者发现“局部误差最大的步”并不是最有校正价值的锚点（两者 Spearman 相关为负）。于是离线采集完整轨迹估计跨时间步协方差核 K，在给定预算下贪心选择使加权轨迹后验方差下降最多的锚点。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div><b>免训练、即插即用</b>，可叠加在 MagCache、DiCache 等缓存方法之上。评测 FLUX.1-dev、Qwen-Image-2512，视频模型 <b>Wan 2.1-1.3B、CogVideoX-2B、OpenSora 1.2</b>。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">在可比或更高加速比下持续提升重建保真度（PSNR/SSIM/LPIPS），并保持有竞争力的 VBench 质量；论文正文未给出单一的视频加速倍数总结，故此处不列具体数字。消融显示平滑与 PVR 各自有效、组合最佳。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>视角新颖——从“预测未来”转到“用未来修正过去”，作为通用后处理可叠加在任意缓存方法上，与 SpecKCast 对照阅读很有启发。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25664" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25664" target="_blank" rel="noopener">PDF ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25664" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25664" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p7">
 <div class="paper-top"><span class="paper-no">No. 07</span><span class="stars" title="推荐指数">★★★★<span class="off">★</span><span class="sc">4</span></span></div>
@@ -197,11 +217,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">Fréchet Forcing：只用短片段训练长时程流式世界模型</p>
 <div class="meta"><span>🏛 论文首页未标注机构</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.25666</span></div>
 <div class="chips"><span class="chip">长视频</span><span class="chip">世界模型</span><span class="chip">无教师后训练</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>动作条件的流式世界模型只在短片段上训练，rollout 超出训练长度就会漂移。常用的 DMD 自 rollout 训练依赖教师：外部视频模型不懂动作，而模型自己的预训练网络又和学生一样会漂移。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>长 rollout 不必对齐某个教师，只要满足三点：仍是遵循动作的条件生成器、忠于自己的场景、画面真实。三者分别用一个约束实现（权重均为 1）：</p><ol class="comp"><li><span class="cn">生成锚定（Generative anchoring）</span>从真实片段取前 c 块，加噪到 t=0.7 后用部署采样器自回归重绘（带入模型自身误差），再在其后 4 个真实块上施加 flow-matching 损失。关键细节：<b>历史最后一块必须换回真实数据</b>，否则模型会学成在块边界“重画场景”，产生块级闪烁。</li><li><span class="cn">上下文保真（Context fidelity）</span>让模型用部署采样器自由 rollout，对潜变量的逐通道均值/标准差（相邻两帧拼接以捕捉时间变化）减去该片段自身真值均值，再与真实视频计算 Fréchet 距离——把“群体统计”变为“逐片段条件”，防止塌缩到数据集平均外观。</li><li><span class="cn">真实性匹配（Reality matching）</span>把最后若干块解码到像素，用冻结的 DINOv2 ViT-B/14 CLS 特征与真实帧（经同一 VAE 重建）计算 Fréchet 距离，排除变暗、发白、周期平铺等退化解。</li><li><span class="cn">工程细节</span>Fréchet 距离的一、二阶矩用 EMA 维护以扩大有效样本；损失写成 FD / sg(FD)，梯度等价于 ∇log FD，各项量纲自动对齐；只对最后 K 步保留梯度，历史以 detach 方式进入 KV Cache。</li></ol><div class="setup">⚙️ 需要微调，但<b>不需要教师、在线判别器或长视频</b>。基座 <b>MiniWorld-1B</b>（在 253 帧片段上预训练），在 381 帧片段上微调，最多 36 GPU 小时；任务覆盖 DROID 机器人操作与 Sekai 相机控制探索。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>动作条件的流式世界模型只在短片段上训练，rollout 超出训练长度就会漂移。常用的 DMD 自 rollout 训练依赖教师：外部视频模型不懂动作，而模型自己的预训练网络又和学生一样会漂移。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>长 rollout 不必对齐某个教师，只要满足三点：仍是遵循动作的条件生成器、忠于自己的场景、画面真实。三者分别用一个约束实现（权重均为 1）：</p><ol class="comp"><li><span class="cn">生成锚定（Generative anchoring）</span>从真实片段取前 c 块，加噪到 t=0.7 后用部署采样器自回归重绘（带入模型自身误差），再在其后 4 个真实块上施加 flow-matching 损失。关键细节：<b>历史最后一块必须换回真实数据</b>，否则模型会学成在块边界“重画场景”，产生块级闪烁。</li><li><span class="cn">上下文保真（Context fidelity）</span>让模型用部署采样器自由 rollout，对潜变量的逐通道均值/标准差（相邻两帧拼接以捕捉时间变化）减去该片段自身真值均值，再与真实视频计算 Fréchet 距离——把“群体统计”变为“逐片段条件”，防止塌缩到数据集平均外观。</li><li><span class="cn">真实性匹配（Reality matching）</span>把最后若干块解码到像素，用冻结的 DINOv2 ViT-B/14 CLS 特征与真实帧（经同一 VAE 重建）计算 Fréchet 距离，排除变暗、发白、周期平铺等退化解。</li><li><span class="cn">工程细节</span>Fréchet 距离的一、二阶矩用 EMA 维护以扩大有效样本；损失写成 FD / sg(FD)，梯度等价于 ∇log FD，各项量纲自动对齐；只对最后 K 步保留梯度，历史以 detach 方式进入 KV Cache。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div>需要微调，但<b>不需要教师、在线判别器或长视频</b>。基座 <b>MiniWorld-1B</b>（在 253 帧片段上预训练），在 381 帧片段上微调，最多 36 GPU 小时；任务覆盖 DROID 机器人操作与 Sekai 相机控制探索。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">微调后 rollout 在 <mark>4,000 帧以上</mark>保持稳定并持续遵循动作；DROID 上相对正反向回放的 PSNR 到第 4,000 帧仍 <mark>&gt;21 dB</mark>，基座仅 <b>8.9 dB</b>。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>为 Self-Forcing 类长视频后训练提供了<b>不依赖教师</b>的新范式，训练成本低，对世界模型、交互式视频生成方向尤其有参考价值。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25666" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25666" target="_blank" rel="noopener">PDF ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25666" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25666" target="_blank" rel="noopener">PDF ↗</a></div></aside></div>
 </article>
 <article class="paper" id="p8">
 <div class="paper-top"><span class="paper-no">No. 08</span><span class="stars" title="推荐指数">★★★★<span class="off">★</span><span class="sc">4</span></span></div>
@@ -209,11 +230,12 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 <p class="zh">FluidGen：基于运动引导后训练的物理感知流体视频生成</p>
 <div class="meta"><span>🏛 斯坦福大学（Jiajun Wu、Gordon Wetzstein、Leonidas Guibas 团队）</span><span>📅 提交于 2026-10-19</span><span>arXiv:2610.25660</span></div>
 <div class="chips"><span class="chip">后训练</span><span class="chip">DPO 偏好对齐</span><span class="chip">物理一致性</span></div>
-<div class="blk"><div class="blk-h">问题</div><p>视频生成模型在烟、火、爆炸碎片等流体现象上系统性失败：缺乏连贯的涡旋结构、动态塌缩得平淡；传统求解器虽物理准确，却需要完整 3D 场景和精调参数，无法用于任意图像输入。</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>把数据驱动的流体先验直接“烤进”视频模型：让模型<b>同时生成 RGB 与逐像素 3D 速度场</b>，再把速度场作为可解释的物理信号做偏好对齐。</p><ol class="comp"><li><span class="cn">速度场编码</span>每像素速度 v=(v<sub>x</sub>,v<sub>y</sub>,v<sub>z</sub>) 经球坐标分解编码成 3 通道“颜色”，从而可以直接复用原 VAE 编解码，不必另训潜空间。</li><li><span class="cn">双头 DiT</span>在 Wan 14B 图生视频 DiT 上把 patch embedding 输入从 16+K 扩到 16+16+K 通道、输出头从 16 扩到 32 通道，新增部分<b>零初始化</b>，起点即原模型；RGB 与速度共享同一去噪器、沿同一轨迹采样，保证两者因果一致。</li><li><span class="cn">阶段一：联合监督微调</span>在 Houdini 仿真（烟/火/爆炸 + 真值欧拉速度场）与真实流体视频混合数据上做联合 flow-matching；对无速度标注的真实视频按通道掩码只监督 RGB。</li><li><span class="cn">阶段二：速度感知 DPO</span>由 13 个分量组成的物理奖励（方向多样性、时间连贯、涡量/Q 准则、Kolmogorov 惯性区等，多数直接由预测速度场计算）为每个输入的 4 个样本打分，取最高/最低构成偏好对，按 Flow-DPO 目标用 LoRA 训练，参考模型即关闭 LoRA 的自身。</li></ol><div class="setup">⚙️ 需要训练（SFT + DPO 两阶段）。基座 <b>Wan2.1-I2V-14B</b>。</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>视频生成模型在烟、火、爆炸碎片等流体现象上系统性失败：缺乏连贯的涡旋结构、动态塌缩得平淡；传统求解器虽物理准确，却需要完整 3D 场景和精调参数，无法用于任意图像输入。</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>把数据驱动的流体先验直接“烤进”视频模型：让模型<b>同时生成 RGB 与逐像素 3D 速度场</b>，再把速度场作为可解释的物理信号做偏好对齐。</p><ol class="comp"><li><span class="cn">速度场编码</span>每像素速度 v=(v<sub>x</sub>,v<sub>y</sub>,v<sub>z</sub>) 经球坐标分解编码成 3 通道“颜色”，从而可以直接复用原 VAE 编解码，不必另训潜空间。</li><li><span class="cn">双头 DiT</span>在 Wan 14B 图生视频 DiT 上把 patch embedding 输入从 16+K 扩到 16+16+K 通道、输出头从 16 扩到 32 通道，新增部分<b>零初始化</b>，起点即原模型；RGB 与速度共享同一去噪器、沿同一轨迹采样，保证两者因果一致。</li><li><span class="cn">阶段一：联合监督微调</span>在 Houdini 仿真（烟/火/爆炸 + 真值欧拉速度场）与真实流体视频混合数据上做联合 flow-matching；对无速度标注的真实视频按通道掩码只监督 RGB。</li><li><span class="cn">阶段二：速度感知 DPO</span>由 13 个分量组成的物理奖励（方向多样性、时间连贯、涡量/Q 准则、Kolmogorov 惯性区等，多数直接由预测速度场计算）为每个输入的 4 个样本打分，取最高/最低构成偏好对，按 Flow-DPO 目标用 LoRA 训练，参考模型即关闭 LoRA 的自身。</li></ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div>需要训练（SFT + DPO 两阶段）。基座 <b>Wan2.1-I2V-14B</b>。</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">阶段一相对基座：PSNR <mark>22.50 → 31.52</mark>，FVD <mark>569.7 → 192.1</mark>，VBench 主体一致性 0.8929 → 0.9383。DPO 后 FluidNexus 指标与仅微调持平，成像质量显著提升、美学略升，主体一致性小幅下降（0.9383 → 0.9350），作者解释为奖励偏好更强湍流。</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>“辅助物理信号 → 奖励 → DPO”是视频偏好对齐的好范例：奖励直接来自模型自身输出，无需外部光流或仿真器；生成的速度场还能导回 Houdini 使用。</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25660" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25660" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://y-zheng18.github.io/FluidGen/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/2610.25660" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/2610.25660" target="_blank" rel="noopener">PDF ↗</a><a class="btn ghost" href="https://y-zheng18.github.io/FluidGen/" target="_blank" rel="noopener">代码 / 项目页 ↗</a></div></aside></div>
 </article>
 <h2 class="section-h">其他值得一瞥</h2><p class="section-sub">未入选正文、但与方向相关的论文</p><ul class="others">
 <li><a href="https://arxiv.org/abs/2610.24750" target="_blank" rel="noopener">CorrFlow: Self-Correcting Flow Matching</a><span class="d">用轻量 refiner 复用同一次前向的隐状态逐步修正速度预测，无额外基座前向，T2V/I2V 质量与物理一致性提升。</span></li>

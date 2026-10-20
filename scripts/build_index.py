@@ -7,7 +7,7 @@ items = sorted(json.loads((ROOT / "digests.json").read_text(encoding="utf-8")), 
 out = [head("视频生成后训练 · arXiv 每日精选 · 往期目录"), '<div class="wrap">',
        '<div class="topbar"><span class="brand"><span class="dot"></span>arXiv 每日精选</span><span>每个工作日更新</span></div>',
        '<span class="eyebrow">Video Generation · Post-Training</span>',
-       '<h1 class="title">视频生成后训练<br>每日论文精选</h1>',
+       '<h1 class="title">视频生成后训练 · 每日论文精选</h1>',
        '<p class="lede">聚焦视频生成模型的后训练：蒸馏、少步采样、缓存、稀疏注意力、量化，以及 RL / 偏好对齐与长视频生成效率。每期精读 3–8 篇，讲清问题、方法与真实结果。</p>',
        f'<div class="facts"><span>共 <b>{len(items)}</b> 期</span><span>最近更新 <b>{items[0]["date"] if items else "-"}</b></span><span>数据来源 arXiv</span></div>',
        '<h2 class="section-h">往期目录</h2><p class="section-sub">按日期倒序 · 点击卡片阅读</p><div class="issues">']

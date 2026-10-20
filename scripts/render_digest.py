@@ -18,11 +18,11 @@ def render(D, back_link=True):
     out.append('<div class="topbar"><span class="brand"><span class="dot"></span>arXiv 每日精选</span>'
                + ('<a href="../index.html">← 返回往期目录</a>' if back_link else '') + '</div>')
     out.append('<span class="eyebrow">Video Generation · Post-Training</span>')
-    out.append(f'<h1 class="title">视频生成后训练<br>每日论文精选</h1>')
+    out.append('<h1 class="title">视频生成后训练 · 每日论文精选</h1>')
     out.append(f'<p class="lede">{D.get("lede","聚焦视频生成模型的后训练：蒸馏、少步采样、缓存、稀疏注意力、量化，以及 RL / 偏好对齐与长视频生成效率。")}</p>')
     out.append(f'<div class="facts"><span><b>{date_cn}</b>（{wd}）</span><span>覆盖：{html.escape(D["range"])}</span>'
                f'<span>分类：{html.escape(D.get("categories",""))}</span><span>精选 <b>{len(P)}</b> 篇</span></div>')
-    out.append('<section class="overview"><h2>今日看点</h2>' + "".join(f"<p>{p}</p>" for p in D["overview"]) + '</section>')
+    out.append('<section class="overview"><h2>今日看点</h2><div class="ov-cols">' + "".join(f"<p>{p}</p>" for p in D["overview"]) + '</div></section>')
     out.append('<nav class="toc"><div class="toc-h">本期目录 · 点击跳转</div><ol>')
     for i, p in enumerate(P, 1):
         out.append(f'<li><a href="#p{i}"><span class="n">{i:02d}</span><span class="t">{html.escape(p["short"])}</span>'
@@ -37,11 +37,12 @@ def render(D, back_link=True):
 <p class="zh">{html.escape(p["zh"])}</p>
 <div class="meta"><span>🏛 {html.escape(p["aff"])}</span><span>📅 提交于 {p["submitted"]}</span><span>arXiv:{p["id"]}</span></div>
 <div class="chips">{"".join(f'<span class="chip">{html.escape(t)}</span>' for t in p["tags"])}</div>
-<div class="blk"><div class="blk-h">问题</div><p>{p["problem"]}</p></div>
-<div class="blk"><div class="blk-h">方法</div><p>{p["idea"]}</p><ol class="comp">{comps}</ol><div class="setup">⚙️ {p["setup"]}</div></div>
+<div class="paper-body"><div class="main"><div class="blk"><div class="blk-h">问题</div><p>{p["problem"]}</p></div>
+<div class="blk"><div class="blk-h">方法</div><p>{p["idea"]}</p><ol class="comp">{comps}</ol></div></div>
+<aside class="side"><div class="setup"><div class="side-h">设置</div>{p["setup"]}</div>
 <div class="blk"><div class="blk-h">结果</div><div class="results">{p["results"]}</div></div>
 <div class="blk"><div class="blk-h">为什么值得看</div><p>{p["why"]}</p></div>
-<div class="actions"><a class="btn" href="https://arxiv.org/abs/{p["id"]}" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/{p["id"]}" target="_blank" rel="noopener">PDF ↗</a>{code}</div>
+<div class="actions"><a class="btn" href="https://arxiv.org/abs/{p["id"]}" target="_blank" rel="noopener">arXiv 摘要 ↗</a><a class="btn ghost" href="https://arxiv.org/pdf/{p["id"]}" target="_blank" rel="noopener">PDF ↗</a>{code}</div></aside></div>
 </article>''')
     if D.get("others"):
         out.append('<h2 class="section-h">其他值得一瞥</h2><p class="section-sub">未入选正文、但与方向相关的论文</p><ul class="others">')
