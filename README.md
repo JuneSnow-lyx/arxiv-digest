@@ -2,22 +2,57 @@
 
 在线阅读：https://junesnow-lyx.github.io/arxiv-digest/
 
-- `index.html`：往期目录（由脚本生成，勿手改）
-- `digests/YYYY-MM-DD.html`：每期精选（单文件、自包含 HTML）
-- `digests.json`：期刊清单（日期、篇数、覆盖范围、一句话看点）
-- `scripts/add_digest.py`：新增一期（复制页面 + 注入“← 返回往期目录” + 更新清单 + 重建目录）
-- `scripts/build_index.py`：仅根据 `digests.json` 重建 `index.html`
+## 目录结构
 
-## 新增一期
+| 路径 | 说明 |
+|---|---|
+| `index.html` | 往期目录（由 `scripts/build_index.py` 生成，勿手改） |
+| `digests/YYYY-MM-DD.html` | 每期页面（单文件、CSS 内联、无外部资源） |
+| `data/YYYY-MM-DD.json` | 每期的结构化内容（**每日任务只需写这个文件**） |
+| `digests.json` | 期刊清单（日期、篇数、覆盖范围、一句话看点），由 add_digest 自动维护 |
+| `templates/style.css` | 共享样式（Claude 风格 + 淡蓝色调），渲染时内联进页面 |
+| `scripts/render_digest.py` | JSON → 单期 HTML |
+| `scripts/add_digest.py` | 新增/替换一期：渲染页面 + 更新清单 + 重建目录 |
+| `scripts/build_index.py` | 仅根据 `digests.json` 重建 `index.html` |
+
+## 每日新增一期
+
+1. 以 `data/2026-10-20.json` 为样例，写好 `data/YYYY-MM-DD.json`（字段见下）。
+2. 运行：
 
 ```bash
-cd /workspace/arxiv-site
-git pull --ff-only
-python3 scripts/add_digest.py /workspace/arxiv-digest/2026-10-21.html \
-  --date 2026-10-21 --count 6 \
-  --range "arXiv 2026-10-21 公告批次" \
-  --highlight "一句话今日看点"
-git add -A && git commit -m "digest: 2026-10-21" && git push
+cd /workspace/arxiv-site && git pull --ff-only
+python3 scripts/add_digest.py --json data/YYYY-MM-DD.json
+# 可选：生成一份不带“返回目录”链接的离线单文件
+python3 scripts/render_digest.py data/YYYY-MM-DD.json --no-back -o /workspace/arxiv-digest/YYYY-MM-DD.html
+git add -A && git commit -m "digest: YYYY-MM-DD" && git push
 ```
 
-同一天重复运行会覆盖该期并更新清单。推送后 GitHub Pages 约 1 分钟内自动更新。
+同一天重复运行会覆盖该期。推送后 GitHub Pages 约 1 分钟内更新。
+
+## JSON 字段
+
+```jsonc
+{
+  "date": "YYYY-MM-DD",
+  "range": "覆盖范围，如 arXiv 2026-10-21 公告批次 · 论文提交于 10-20",
+  "categories": "cs.CV / cs.LG / ...",
+  "highlight": "一句话今日看点（用于目录页，纯文本）",
+  "overview": ["今日看点段落1（可含 <b>/<mark>/<mark class=\"blue\">）", "段落2"],
+  "papers": [{
+    "id": "2610.xxxxx", "short": "简称", "title": "英文原题", "zh": "中文译名",
+    "aff": "主要机构（查不到写“未标注”）", "submitted": "YYYY-MM-DD",
+    "tags": ["蒸馏", "缓存加速"], "stars": 4.5, "code": "代码/项目页 URL 或 null",
+    "problem": "要解决的问题 / 现有方法痛点",
+    "idea": "整体思路（可含 <code> 公式）",
+    "components": [{"name": "组件名（English）", "html": "是什么、怎么做、为什么有效"}],
+    "setup": "训练/免训练、基座模型、关键设置",
+    "results": "只用论文中的真实数字",
+    "why": "为什么值得看"
+  }],
+  "others": [{"id": "2610.xxxxx", "title": "英文题目", "desc": "一句话"}],
+  "note": "页脚说明"
+}
+```
+
+字符串字段允许内联 HTML：`<b>` 加粗、`<mark>` 淡黄高亮、`<mark class="blue">` 淡蓝高亮、`<code>` 公式、`<sub>/<sup>`。
