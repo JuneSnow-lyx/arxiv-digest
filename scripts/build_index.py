@@ -21,7 +21,7 @@ page = f"""<!DOCTYPE html>
 <style>
 :root{{--bg:#eaf4ff;--blue:#2b6cb0;--blue2:#4a90d9;--soft:#dbeafe;--text:#1f2d3d;--muted:#5b6b7f;--line:#d6e6f7}}
 *{{box-sizing:border-box}}
-body{{margin:0;background:linear-gradient(180deg,#dcecff 0,var(--bg) 320px);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC","Helvetica Neue",Arial,sans-serif;line-height:1.75}}
+body{{margin:0;background:linear-gradient(180deg,#dcecff 0,var(--bg) 320px);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC","Helvetica Neue",Arial,sans-serif;line-height:1.75;min-height:100vh}}
 .wrap{{max-width:860px;margin:0 auto;padding:28px 18px 60px}}
 header{{background:linear-gradient(135deg,#2b6cb0,#4a90d9 60%,#7fb6f0);color:#fff;border-radius:22px;padding:30px;box-shadow:0 10px 30px rgba(43,108,176,.25)}}
 header .kicker{{font-size:13px;letter-spacing:2px;opacity:.85}}
